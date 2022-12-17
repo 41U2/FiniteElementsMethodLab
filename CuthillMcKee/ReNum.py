@@ -1,16 +1,16 @@
-#ПЕРЕНУМЕРАЦИЯ СПИСКА ВЕРШИН
+#РџР•Р Р•РќРЈРњР•Р РђР¦РРЇ РЎРџРРЎРљРђ Р’Р•Р РЁРРќ
 def ReNum(NewOrder_unique, AdjMatrix, points):
     i=0;
-    points_new = []; # Новый список вершин, полученный после перенумерации алгоритмом Катхилла-Макки
+    points_new = []; # РќРѕРІС‹Р№ СЃРїРёСЃРѕРє РІРµСЂС€РёРЅ, РїРѕР»СѓС‡РµРЅРЅС‹Р№ РїРѕСЃР»Рµ РїРµСЂРµРЅСѓРјРµСЂР°С†РёРё Р°Р»РіРѕСЂРёС‚РјРѕРј РљР°С‚С…РёР»Р»Р°-РњР°РєРєРё
     while i < Nx*Ny:
         points_new.append(points[NewOrder_unique[i]]);
         i+=1;
     #print(points_new);
 
-    #ЗАПОЛНЕНИЕ НОВОЙ МАТРИЦЫ СМЕЖНОСТИ
+    #Р—РђРџРћР›РќР•РќРР• РќРћР’РћР™ РњРђРўР РР¦Р« РЎРњР•Р–РќРћРЎРўР
     i=0;
     j=0;
-    AdjMatrix_new = AdjMatrix; #Новая матрица смежности, полученная после перенумерации вершин
+    AdjMatrix_new = AdjMatrix; #РќРѕРІР°СЏ РјР°С‚СЂРёС†Р° СЃРјРµР¶РЅРѕСЃС‚Рё, РїРѕР»СѓС‡РµРЅРЅР°СЏ РїРѕСЃР»Рµ РїРµСЂРµРЅСѓРјРµСЂР°С†РёРё РІРµСЂС€РёРЅ
     while i < len(AdjMatrix_new):
         j=0;
         while j < len(AdjMatrix_new[i]):
@@ -25,5 +25,5 @@ def ReNum(NewOrder_unique, AdjMatrix, points):
         i+=1;
     return [points_new, AdjMatrix_new1]
 
-#print(ReNum(CuthillMcKee(triangulation(x0, y0, Nx, Ny, hx, hy)[1]), triangulation(x0, y0, Nx, Ny, hx, hy)[1], triangulation(x0, y0, Nx, Ny, hx, hy)[0])[0]); # Новый массив вершин
-#print(ReNum(CuthillMcKee(triangulation(x0, y0, Nx, Ny, hx, hy)[1]), triangulation(x0, y0, Nx, Ny, hx, hy)[1], triangulation(x0, y0, Nx, Ny, hx, hy)[0])[1]); # Новая матрица смежности
+#print(ReNum(CuthillMcKee(triangulation(x0, y0, Nx, Ny, hx, hy)[1]), triangulation(x0, y0, Nx, Ny, hx, hy)[1], triangulation(x0, y0, Nx, Ny, hx, hy)[0])[0]); # РќРѕРІС‹Р№ РјР°СЃСЃРёРІ РІРµСЂС€РёРЅ
+#print(ReNum(CuthillMcKee(triangulation(x0, y0, Nx, Ny, hx, hy)[1]), triangulation(x0, y0, Nx, Ny, hx, hy)[1], triangulation(x0, y0, Nx, Ny, hx, hy)[0])[1]); # РќРѕРІР°СЏ РјР°С‚СЂРёС†Р° СЃРјРµР¶РЅРѕСЃС‚Рё

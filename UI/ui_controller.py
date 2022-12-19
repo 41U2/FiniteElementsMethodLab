@@ -1,16 +1,7 @@
 from ui_main_page import *
 from Triangulation.triangulation import *
-import traceback
-import sys
-
-
-# касмтомные ерроры для вывода в консоль
-def except_hook(exc_type, exc_value, exc_tb):
-    tb = "".join(traceback.format_exception(exc_type, exc_value, exc_tb))
-    print("Всё пошло по пизде, давай по новой !:", tb)
-
-
-sys.excepthook = except_hook
+from test_data_for_plot import *
+from plot import *
 
 
 class MainPage:
@@ -28,6 +19,7 @@ class MainPage:
         self.phi = None
         self.psi = None
         self.t = None
+        self.plot = None
 
         self.main_page.init_input_params_button_action(lambda: self.init_input_params())
         self.main_page.create_plot_button_action(lambda: self.create_plot())
@@ -55,6 +47,8 @@ class MainPage:
         print('triangulation processed')
 
     def create_plot(self):
+        self.plot = Window()
+        self.plot.window().show()
         print('plot created')
 
 

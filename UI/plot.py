@@ -35,10 +35,11 @@ class Window(QDialog):
 
         ax = self.figure.add_subplot()
 
+        rgb = [[value_data.value, 0, 0] for value_data in test_data.test_data]
+
         ax.scatter([x_data.x for x_data in test_data.test_data],
                    [y_data.y for y_data in test_data.test_data], s=300,
-                   c=[value_data.value for value_data in test_data.test_data],
-                   cmap="Reds", edgecolors='black', linewidths=1)
+                   c=rgb, edgecolors='black', linewidths=1)
         ax.grid(True)
 
         # refresh canvas

@@ -9,6 +9,6 @@ class Point:
 class TestDataForPlot:
 
     def __init__(self):
-        self.test_data = [Point(1, 1, 70), Point(2, 1, 100), Point(3, 1, 30), Point(4, 1, 70),
-                          Point(1, 2, 150), Point(2, 2, 150), Point(3, 2, 120), Point(4, 2, 120),
-                          Point(1, 3, 170), Point(2, 3, 170), Point(3, 3, 170), Point(4, 3, 170)]
+        self.test_data = [Point(1, 1, 0.2), Point(2, 1, 0.3), Point(3, 1, 0.2), Point(4, 1, 0.7),
+                          Point(1, 2, 0.45), Point(2, 2, 0.8), Point(3, 2, 0.7), Point(4, 2, 0.3),
+                          Point(1, 3, 0.9), Point(2, 3, 0.5), Point(3, 3, 0.2), Point(4, 3, 0.8)]

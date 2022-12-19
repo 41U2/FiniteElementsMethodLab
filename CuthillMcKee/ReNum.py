@@ -1,5 +1,5 @@
 #ПЕРЕНУМЕРАЦИЯ СПИСКА ВЕРШИН
-def ReNum(NewOrder_unique, AdjMatrix, points):
+def ReNum(NewOrder_unique, AdjMatrix, points, Nx, Ny):
     i=0;
     points_new = []; # Новый список вершин, полученный после перенумерации алгоритмом Катхилла-Макки
     while i < Nx*Ny:
@@ -25,5 +25,5 @@ def ReNum(NewOrder_unique, AdjMatrix, points):
         i+=1;
     return [points_new, AdjMatrix_new1]
 
-#print(ReNum(CuthillMcKee(triangulation(x0, y0, Nx, Ny, hx, hy)[1]), triangulation(x0, y0, Nx, Ny, hx, hy)[1], triangulation(x0, y0, Nx, Ny, hx, hy)[0])[0]); # Новый массив вершин
-#print(ReNum(CuthillMcKee(triangulation(x0, y0, Nx, Ny, hx, hy)[1]), triangulation(x0, y0, Nx, Ny, hx, hy)[1], triangulation(x0, y0, Nx, Ny, hx, hy)[0])[1]); # Новая матрица смежности
+#print(ReNum(CuthillMcKee(triangulation(x0, y0, Nx, Ny, hx, hy)[1]), triangulation(x0, y0, Nx, Ny, hx, hy)[1], triangulation(x0, y0, Nx, Ny, hx, hy)[0], Nx, Ny)[0], Nx, Ny); # Новый массив вершин
+#print(ReNum(CuthillMcKee(triangulation(x0, y0, Nx, Ny, hx, hy)[1]), triangulation(x0, y0, Nx, Ny, hx, hy)[1], triangulation(x0, y0, Nx, Ny, hx, hy)[0], Nx, Ny)[1], Nx, Ny); # Новая матрица смежности

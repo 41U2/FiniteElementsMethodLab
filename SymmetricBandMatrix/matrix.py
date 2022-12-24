@@ -23,6 +23,11 @@ class Matrix:
         assert i_col >= 0
         self.values[self.n_cols * i_row + i_col] = value
 
+    @staticmethod
+    def zeros(n_rows: int, n_cols: int):
+        array = [0 for i in range (n_rows * n_cols)]
+        return Matrix(n_rows, n_cols, array)
+
     def __str__(self):
         result_str = ""
         for i_row in range(self.n_rows):
@@ -37,6 +42,9 @@ def matrix_example():
     matrix.set_value(0, 0, 100)
     print(matrix)
 
+    zeros_mat = Matrix.zeros(4, 4)
+    print(zeros_mat)
 
-matrix_example()
+
+#matrix_example()
 

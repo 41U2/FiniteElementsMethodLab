@@ -1,7 +1,7 @@
 from typing import List
 
 
-class BandMatrix:
+class SymmetricBandMatrix:
 
     def __init__(self, size: int, arrays: List[List[float]]):
         self.arrays = arrays
@@ -22,7 +22,7 @@ class BandMatrix:
 
         return self(i_col, i_row)
 
-    def __add__(self, band_matrix: "BandMatrix") -> "BandMatrix":
+    def __add__(self, band_matrix: "SymmetricBandMatrix") -> "SymmetricBandMatrix":
         assert self.size == band_matrix.size
         n_rows = len(self.arrays)
         assert n_rows == len(band_matrix.arrays)
@@ -32,7 +32,7 @@ class BandMatrix:
             assert n_cols == len(band_matrix.arrays[i_row])
             for i_col in range(n_cols):
                 result_arrays[i_row][i_col] += band_matrix.arrays[i_row][i_col]
-        return BandMatrix(self.size, result_arrays)
+        return SymmetricBandMatrix(self.size, result_arrays)
 
     def __str__(self):
         result_str = ""
@@ -58,10 +58,10 @@ def symmetric_band_matrix_example():
         [9.9]
     ]
 
-    band_matrix_1 = BandMatrix(4, arrays_1)
-    band_matrix_2 = BandMatrix(4, arrays_2)
+    band_matrix_1 = SymmetricBandMatrix(4, arrays_1)
+    band_matrix_2 = SymmetricBandMatrix(4, arrays_2)
 
     print(band_matrix_1 + band_matrix_2)
 
 
-symmetric_band_matrix_example()
+#symmetric_band_matrix_example()

@@ -12,13 +12,15 @@ class BandMatrix:
     def __call__(self, i_row: int, i_col: int) -> float:
         assert i_row < self.size
         assert i_col < self.size
+        assert i_row >= 0
+        assert i_col >= 0
         if i_row <= i_col:
             n_elements = len(self.arrays[i_row])
             if i_col >= i_row + n_elements:
                 return 0
             return self.arrays[i_row][i_col - i_row]
 
-        return self.__call__(i_col, i_row)
+        return self(i_col, i_row)
 
     def __add__(self, band_matrix: "BandMatrix") -> "BandMatrix":
         assert self.size == band_matrix.size
@@ -41,7 +43,7 @@ class BandMatrix:
         return result_str
 
 
-def example():
+def symmetric_band_matrix_example():
     arrays_1 = [
         [1, 2, 0, 3],
         [4],
@@ -52,7 +54,7 @@ def example():
     arrays_2 = [
         [1, 0.1, 14, -5],
         [4],
-        [6, 2],
+        [6, 3],
         [9.9]
     ]
 
@@ -61,4 +63,5 @@ def example():
 
     print(band_matrix_1 + band_matrix_2)
 
-example()
+
+symmetric_band_matrix_example()

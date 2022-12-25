@@ -8,7 +8,9 @@ from ThermalConductivity.utils import get_triangle_area, scattering_procedure, i
 def get_source_vector(
         vertices: List[List[float]],
         triangle_indices: List[Tuple[int, int, int]],
-        source_function) -> Matrix:
+        source_function,
+        current_time: float
+) -> Matrix:
     n_vertices = len(vertices)
     source_matrix = Matrix.zeros(n_vertices, 1)
     for i, j, k in triangle_indices:
@@ -19,7 +21,7 @@ def get_source_vector(
         )
         array = [i, j, k]
         for i_vertex in range(3):
-            value = integrate_by_triangle(source_function, triangle_vertices, i_vertex)
+            value = integrate_by_triangle(source_function, triangle_vertices, i_vertex, current_time)
             current_value = source_matrix(array[i_vertex], 0)
             source_matrix.set_value(array[i_vertex], 0, current_value + value)
 

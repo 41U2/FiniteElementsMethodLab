@@ -5,6 +5,7 @@ from SymmetricBandMatrix.symmetric_band_matrix import SymmetricBandMatrix
 from SymmetricBandMatrix.matrix import Matrix
 from SymmetricBandMatrix.lu_decomposition import LUDecomposition
 from matrices import get_source_vector
+from utils import apply_boundary_conditions
 
 
 class ThermalConductivitySolver:
@@ -24,6 +25,7 @@ class ThermalConductivitySolver:
     def __euler_step__(
             vertices: List[List[float]],
             triangle_vertex_indices: List[Tuple[int, int, int]],
+            is_boundary_vertex: List[bool],
             current_values: Matrix,
             thermal_conductivity_matrix: SymmetricBandMatrix,
             damping_matrix: SymmetricBandMatrix,
@@ -35,8 +37,13 @@ class ThermalConductivitySolver:
         left_side_matrix = damping_matrix + thermal_conductivity_matrix * dt
         source_vector = get_source_vector(vertices, triangle_vertex_indices, source_function)
         right_side_vector = SymmetricBandMatrix.mtimes(damping_matrix, current_values) + source_vector * dt
-        decomposition = LUDecomposition.lu_decompose_sbm(left_side_matrix)
-        return decomposition.solve(right_side_vector)
+
+        left_side_with_boundary_function, right_side_with_boundary_function = apply_boundary_conditions(
+            vertices, left_side_matrix, boundary_function, right_side_vector, is_boundary_vertex,
+            current_time
+        )
+        decomposition = LUDecomposition.lu_decompose_sbm(left_side_with_boundary_function)
+        return decomposition.solve(right_side_with_boundary_function)
 
     def solve(
             self,

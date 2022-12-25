@@ -15,7 +15,9 @@ def get_triangle_area(vertices: Tuple[List[float], List[float], List[float]]) ->
 def integrate_by_triangle(
         function,
         triangle_vertices: Tuple[List[float], List[float], List[float]],
-        i_vertex_in_triangle: int) -> float:
+        i_vertex_in_triangle: int,
+        current_time: float
+) -> float:
     assert i_vertex_in_triangle <= 2
     assert i_vertex_in_triangle >= 0
     area = get_triangle_area((triangle_vertices[0], triangle_vertices[1], triangle_vertices[2]))
@@ -35,7 +37,7 @@ def integrate_by_triangle(
         (triangle_vertices[i_vertex_in_triangle][1] + triangle_vertices[neighbours[1]][1]) / 2.,
     ]
 
-    return area * (function(middle_point_1) + function(middle_point_2)) / 6.
+    return area * (function(middle_point_1, current_time) + function(middle_point_2, current_time)) / 6.
 
 
 def scattering_procedure(result_matrix_size: int, triangle_indices: List[Tuple[int, int, int]],

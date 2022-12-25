@@ -5,8 +5,16 @@ from SymmetricBandMatrix.matrix import Matrix
 from SymmetricBandMatrix.symmetric_band_matrix import SymmetricBandMatrix
 
 
-def get_source_matrix(vertices: List[List[float]], triangle_indices: List[Tuple[int, int, int]],
-                      source_function, is_boundary_vertices: List[bool]) -> Matrix:
+def get_source_matrix(
+        vertices: List[List[float]],
+        triangle_indices:
+        List[Tuple[int, int, int]],
+        source_function,
+        boundary_function,
+        is_boundary_vertices: List[bool]) -> Matrix:
+    n_vertices = len(vertices)
+    source_matrix = Matrix.zeros(n_vertices, 1)
+
     pass
 
 

@@ -3,8 +3,8 @@ from typing import List
 
 from ThermalConductivity.matrices import \
     get_damping_matrix, \
-    get_thermal_conductivity_matrix_wo_border_condition, \
-    get_source_matrix
+    get_thermal_conductivity_matrix, \
+    get_source_vector
 
 
 def damping_matrix_test():
@@ -33,7 +33,7 @@ def thermal_conductivity_matrix_test():
         (0, 1, 3),
         (1, 2, 3)
     ]
-    thermal_conductivity_matrix = get_thermal_conductivity_matrix_wo_border_condition(vertices, triangle_indices)
+    thermal_conductivity_matrix = get_thermal_conductivity_matrix(vertices, triangle_indices)
     print(f'thermal_conductivity_matrix = \n{thermal_conductivity_matrix}')
 
 
@@ -52,7 +52,7 @@ def source_matrix_test():
         (0, 2, 3),
         (2, 0, 1)
     ]
-    result = get_source_matrix(vertices, triangle_vertex_indices, source_matrix_function)
+    result = get_source_vector(vertices, triangle_vertex_indices, source_matrix_function)
     print("Source matrix: \n", result)
 
 

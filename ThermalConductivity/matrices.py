@@ -4,7 +4,7 @@ from SymmetricBandMatrix.matrix import Matrix
 from SymmetricBandMatrix.symmetric_band_matrix import SymmetricBandMatrix
 from ThermalConductivity.utils import get_triangle_area
 
-from utils import intergrate_by_triangle
+from .utils import intergrate_by_triangle
 
 
 def get_source_matrix(
@@ -66,22 +66,3 @@ def get_damping_matrix(vertices: List[List[float]],
 def get_thermal_conductivity_matrix(vertices: List[List[float]],
                                     triangle_indices: List[Tuple[int, int, int]]) -> SymmetricBandMatrix:
     pass
-
-
-def test():
-    vertices = [
-        [0, 0],
-        [24, 0],
-        [24, 24],
-        [0, 24]
-    ]
-    triangle_indices = [
-        (0, 1, 3),
-        (1, 2, 3)
-    ]
-    damping_matrix = get_damping_matrix(vertices, triangle_indices)
-    print(f'{damping_matrix = }')
-
-
-if __name__ == "__main__":
-    test()

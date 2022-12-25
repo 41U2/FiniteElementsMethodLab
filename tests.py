@@ -41,7 +41,7 @@ def source_matrix_function(vertex: List[float]) -> float:
     return 2 * vertex[0] + vertex[1] + 1
 
 
-def source_matrix_test():
+def source_vector_test():
     vertices = [
         [0, 1],
         [1, 1],
@@ -59,4 +59,4 @@ def source_matrix_test():
 if __name__ == "__main__":
     damping_matrix_test()
     thermal_conductivity_matrix_test()
-    source_matrix_test()
+    source_vector_test()

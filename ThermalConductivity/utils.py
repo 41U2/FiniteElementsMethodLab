@@ -65,6 +65,7 @@ def apply_boundary_conditions(vertices: List[List[float]], thermal_conductivity_
                               current_time: float, ) -> Tuple[SymmetricBandMatrix, Matrix]:
     result_matrix = deepcopy(thermal_conductivity_matrix)
     result_vector = deepcopy(source_vector)
+    vertices_num = len(vertices)
     for i_vertex, vertex in enumerate(vertices):
         if not is_boundary_vertex[i_vertex]:
             continue
@@ -73,7 +74,19 @@ def apply_boundary_conditions(vertices: List[List[float]], thermal_conductivity_
         # current_time == prev_time + time_step (В соответствии с неявным методом Эйлера предполагаем, что ищем
         # текущие значения {u} на основе предыдущих)
         value_from_boundary_condition = boundary_condition_func(vertex[x], vertex[y], current_time)
-        result_matrix.set_value(i_vertex, i_vertex, 1)
-        result_vector.set_value(i_vertex, 0, value_from_boundary_condition)
-
+        # Аддитивно переносим столбец матрицы теплопроводности в вектор источника тепла;
+        # Присваиваем значение, полученое из функции граничного условия, вектору источника тепла в позиции,
+        # соответствующей элементу главной диагонали матрицы теплопроводности
+        for i_row in range(vertices_num):
+            if i_row == i_vertex:
+                result_matrix.set_value(i_row, i_vertex, 1)
+                result_vector.set_value(i_row, 0, value_from_boundary_condition)
+            else:
+                result_vector.set_value(i_row, 0,
+                                        result_vector(i_row, 0) - result_matrix(i_row, i_vertex))
+                result_matrix.set_value(i_row, i_vertex, 0)
+        # Обнуляем строку матрицы теплопроводности
+        for i_column in range(vertices_num):
+            if i_column != i_vertex:
+                result_matrix.set_value(i_vertex, i_column, 0)
     return result_matrix, result_vector

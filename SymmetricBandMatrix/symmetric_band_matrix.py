@@ -1,4 +1,4 @@
-from matrix import Matrix
+from .matrix import Matrix
 
 
 class SymmetricBandMatrix:
@@ -34,6 +34,14 @@ class SymmetricBandMatrix:
         return SymmetricBandMatrix(Matrix.zeros(n_rows, band_width))
 
     def __str__(self):
+        result_str = ""
+        for i_row in range(self.size):
+            for i_col in range(self.size):
+                result_str += str(self(i_row, i_col)) + " "
+            result_str += "\n"
+        return result_str
+
+    def __repr__(self):
         result_str = ""
         for i_row in range(self.size):
             for i_col in range(self.size):

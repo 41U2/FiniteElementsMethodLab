@@ -1,6 +1,5 @@
 from ui_main_page import *
 from Triangulation.triangulation import *
-from test_data_for_plot import *
 from plot import *
 
 
@@ -33,12 +32,12 @@ class MainPage:
         self.hy = list(map(int, self.main_page.hy_input.toPlainText().split(',')))
         self.x0 = int(self.main_page.x0_input.toPlainText())
         self.y0 = int(self.main_page.y0_input.toPlainText())
-        self.f = self.main_page.f_input.toPlainText()
-        self.phi = self.main_page.phi_input.toPlainText()
-        self.psi = self.main_page.psi_input.toPlainText()
+        self.f = self.main_page.f_dropdown.currentText()
+        self.phi = self.main_page.phi_dropdown.currentText()
+        self.psi = self.main_page.psi_dropdown.currentText()
         self.t = self.main_page.t_input.toPlainText()
 
-        print(self.nx, self.ny, self.hx, self.hy, self.x0, self.y0, self.f, self.f, self.phi, self.psi, 'input params are set')
+        print('input params are set')
 
         self.invoke_triangulation()
 

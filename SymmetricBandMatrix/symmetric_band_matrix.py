@@ -33,6 +33,18 @@ class SymmetricBandMatrix:
         assert band_width <= n_rows
         return SymmetricBandMatrix(Matrix.zeros(n_rows, band_width))
 
+    @staticmethod
+    def mtimes(m1: "SymmetricBandMatrix", m2: Matrix):
+        assert m1.size == m2.n_rows
+        result_matrix = Matrix.zeros(m1.size, m2.n_cols)
+        for i_row in range(m1.size):
+            for i_col in range(m2.n_cols):
+                sum = 0
+                for i_dim in range(m1.size):
+                    sum += m1(i_row, i_dim) * m2(i_dim, i_col)
+                result_matrix.set_value(i_row, i_col, sum)
+        return result_matrix
+
     def __str__(self):
         result_str = ""
         for i_row in range(self.size):
@@ -63,15 +75,20 @@ def symmetric_band_matrix_example():
         -100, 0, 0
     ])
 
-    band_matrix_1 = SymmetricBandMatrix(mat_1)
-    band_matrix_2 = SymmetricBandMatrix(mat_2)
     band_matrix_zeros = SymmetricBandMatrix.zeros(3, 3)
     band_matrix_zeros.set_value(0, 2, 15)
     print(band_matrix_zeros)
 
+    band_matrix_1 = SymmetricBandMatrix(mat_1)
+    print(band_matrix_1)
+
+    band_matrix_2 = SymmetricBandMatrix(mat_2)
     sum = band_matrix_1 + band_matrix_2 * -1
-    #sum.set_value(0, 1, 0.1)
     print(sum)
+
+    mat_3 = Matrix(3, 1, [1, 2, 3])
+    multiplied = SymmetricBandMatrix.mtimes(band_matrix_1, mat_3)
+    print(multiplied)
 
 
 #symmetric_band_matrix_example()

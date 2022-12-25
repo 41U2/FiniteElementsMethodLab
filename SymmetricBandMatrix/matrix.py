@@ -19,16 +19,16 @@ class Matrix:
     def __add__(self, matrix: "Matrix") -> "Matrix":
         assert self.n_cols == matrix.n_cols
         assert self.n_rows == matrix.n_rows
-        result_values = self.values
+        result_matrix = Matrix.zeros(self.n_rows, self.n_cols)
         for i in range(self.n_cols * self.n_rows):
-            result_values[i] += matrix.values[i]
-        return Matrix(self.n_rows, self.n_cols, result_values)
+            result_matrix.values[i] = matrix.values[i] + self.values[i]
+        return result_matrix
 
     def __mul__(self, value: float) -> "Matrix":
-        result_values = self.values
+        result_matrix = Matrix.zeros(self.n_rows, self.n_cols)
         for i in range(self.n_cols * self.n_rows):
-            result_values[i] *= value
-        return Matrix(self.n_rows, self.n_cols, result_values)
+            result_matrix.values[i] = value * self.values[i]
+        return result_matrix
 
     def set_value(self, i_row: int, i_col: int, value: float):
         assert i_row < self.n_rows
@@ -54,11 +54,11 @@ class Matrix:
 def matrix_example():
     matrix = Matrix(2, 3, [0, 1, 2, 3, -10, 12])
     matrix.set_value(0, 0, 100)
-    print(matrix)
+    print(matrix * 2)
 
     zeros_mat = Matrix.zeros(4, 4)
     print(zeros_mat)
 
 
-#matrix_example()
+matrix_example()
 

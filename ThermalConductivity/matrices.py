@@ -2,7 +2,7 @@ from typing import List, Tuple
 
 from SymmetricBandMatrix.matrix import Matrix
 from SymmetricBandMatrix.symmetric_band_matrix import SymmetricBandMatrix
-from ThermalConductivity.utils import get_triangle_area, partition_procedure
+from ThermalConductivity.utils import get_triangle_area, scattering_procedure
 
 from .utils import integrate_by_triangle
 
@@ -49,7 +49,7 @@ def get_damping_matrix(vertices: List[List[float]],
             1, 1, 2]) * (triangle_area / 12)
         triangle_elements_damping_matrices.append(triangle_element_damping_matrix)
 
-    damping_matrix = partition_procedure(vertices_num, triangle_indices, triangle_elements_damping_matrices)
+    damping_matrix = scattering_procedure(vertices_num, triangle_indices, triangle_elements_damping_matrices)
     return damping_matrix
 
 
@@ -79,6 +79,6 @@ def get_thermal_conductivity_matrix_wo_border_condition(
         ]) * (1 / (4 * triangle_area))
         triangle_elements_thermal_conductivity_matrices.append(triangle_element_thermal_conductivity_matrix)
 
-    thermal_conductivity_matrix_wo_border_conditions = partition_procedure(
+    thermal_conductivity_matrix_wo_border_conditions = scattering_procedure(
         vertices_num, triangle_indices, triangle_elements_thermal_conductivity_matrices)
     return thermal_conductivity_matrix_wo_border_conditions

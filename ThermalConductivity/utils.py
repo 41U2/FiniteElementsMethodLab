@@ -37,8 +37,8 @@ def integrate_by_triangle(
     return area * (function(middle_point_1) + function(middle_point_2)) / 6.
 
 
-def partition_procedure(result_matrix_size: int, triangle_indices: List[Tuple[int, int, int]],
-                        triangle_elements_matrices: List[Matrix]) -> SymmetricBandMatrix:
+def scattering_procedure(result_matrix_size: int, triangle_indices: List[Tuple[int, int, int]],
+                         triangle_elements_matrices: List[Matrix]) -> SymmetricBandMatrix:
     result_matrix = SymmetricBandMatrix.zeros(result_matrix_size, result_matrix_size)
 
     for matrix_index, single_triangle_indices in enumerate(triangle_indices):

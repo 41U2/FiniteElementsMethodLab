@@ -32,9 +32,9 @@ class MainPage:
         self.hy = list(map(int, self.main_page.hy_input.toPlainText().split(',')))
         self.x0 = int(self.main_page.x0_input.toPlainText())
         self.y0 = int(self.main_page.y0_input.toPlainText())
-        self.f = self.main_page.f_input.toPlainText()
-        self.phi = self.main_page.phi_input.toPlainText()
-        self.psi = self.main_page.psi_input.toPlainText()
+        self.f = self.main_page.f_dropdown.currentText()
+        self.phi = self.main_page.phi_dropdown.currentText()
+        self.psi = self.main_page.psi_dropdown.currentText()
         self.t = self.main_page.t_input.toPlainText()
 
         print('input params are set')

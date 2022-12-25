@@ -1,6 +1,10 @@
 from cmath import sqrt
+from typing import List
 
-from ThermalConductivity.matrices import get_damping_matrix, get_thermal_conductivity_matrix_wo_border_condition
+from ThermalConductivity.matrices import \
+    get_damping_matrix, \
+    get_thermal_conductivity_matrix_wo_border_condition, \
+    get_source_matrix
 
 
 def damping_matrix_test():
@@ -33,6 +37,26 @@ def thermal_conductivity_matrix_test():
     print(f'thermal_conductivity_matrix = \n{thermal_conductivity_matrix}')
 
 
+def source_matrix_function(vertex: List[float]) -> float:
+    return 2 * vertex[0] + vertex[1] + 1
+
+
+def source_matrix_test():
+    vertices = [
+        [0, 1],
+        [1, 1],
+        [1, 0],
+        [0, 0]
+    ]
+    triangle_vertex_indices = [
+        (0, 2, 3),
+        (2, 0, 1)
+    ]
+    result = get_source_matrix(vertices, triangle_vertex_indices, source_matrix_function)
+    print("Source matrix: \n", result)
+
+
 if __name__ == "__main__":
     damping_matrix_test()
     thermal_conductivity_matrix_test()
+    source_matrix_test()

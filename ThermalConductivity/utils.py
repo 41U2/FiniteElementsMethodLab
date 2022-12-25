@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import List, Tuple
 
 from SymmetricBandMatrix.matrix import Matrix
@@ -57,3 +58,22 @@ def scattering_procedure(result_matrix_size: int, triangle_indices: List[Tuple[i
         result_matrix.set_value(k, k, result_matrix(k, k) + triangle_elements_matrices[matrix_index](2, 2))
 
     return result_matrix
+
+
+def apply_boundary_conditions(vertices: List[List[float]], thermal_conductivity_matrix: SymmetricBandMatrix,
+                              boundary_condition_func, source_vector: Matrix, is_boundary_vertex: List[bool],
+                              current_time: float, ) -> Tuple[SymmetricBandMatrix, Matrix]:
+    result_matrix = deepcopy(thermal_conductivity_matrix)
+    result_vector = deepcopy(source_vector)
+    for i_vertex, vertex in enumerate(vertices):
+        if not is_boundary_vertex[i_vertex]:
+            continue
+        x = 0
+        y = 1
+        # current_time == prev_time + time_step (В соответствии с неявным методом Эйлера предполагаем, что ищем
+        # текущие значения {u} на основе предыдущих)
+        value_from_boundary_condition = boundary_condition_func(vertex[x], vertex[y], current_time)
+        result_matrix.set_value(i_vertex, i_vertex, 1)
+        result_vector.set_value(i_vertex, 0, value_from_boundary_condition)
+
+    return result_matrix, result_vector

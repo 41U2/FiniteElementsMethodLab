@@ -2,9 +2,7 @@ from typing import List, Tuple
 
 from SymmetricBandMatrix.matrix import Matrix
 from SymmetricBandMatrix.symmetric_band_matrix import SymmetricBandMatrix
-from ThermalConductivity.utils import get_triangle_area, scattering_procedure
-
-from .utils import integrate_by_triangle
+from ThermalConductivity.utils import get_triangle_area, scattering_procedure, integrate_by_triangle
 
 
 def get_source_vector(

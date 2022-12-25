@@ -7,7 +7,7 @@ from ThermalConductivity.utils import get_triangle_area, scattering_procedure
 from .utils import integrate_by_triangle
 
 
-def get_source_matrix(
+def get_source_vector(
         vertices: List[List[float]],
         triangle_indices: List[Tuple[int, int, int]],
         source_function) -> Matrix:

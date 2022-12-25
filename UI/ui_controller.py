@@ -1,6 +1,5 @@
 from ui_main_page import *
 from Triangulation.triangulation import *
-from test_data_for_plot import *
 from plot import *
 
 
@@ -38,7 +37,7 @@ class MainPage:
         self.psi = self.main_page.psi_input.toPlainText()
         self.t = self.main_page.t_input.toPlainText()
 
-        print(self.nx, self.ny, self.hx, self.hy, self.x0, self.y0, self.f, self.f, self.phi, self.psi, 'input params are set')
+        print('input params are set')
 
         self.invoke_triangulation()
 

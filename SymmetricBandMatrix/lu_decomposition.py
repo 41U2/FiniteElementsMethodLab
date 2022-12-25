@@ -1,8 +1,8 @@
 from copy import deepcopy
 from typing import List
 
-from symmetric_band_matrix import SymmetricBandMatrix
-from matrix import Matrix
+from .symmetric_band_matrix import SymmetricBandMatrix
+from .matrix import Matrix
 
 
 class LUDecomposition:

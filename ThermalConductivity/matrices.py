@@ -46,10 +46,9 @@ def get_damping_matrix(vertices: List[List[float]],
     return damping_matrix
 
 
-# Матрица теплопроводности (без учета граничного условия)
-def get_thermal_conductivity_matrix_wo_border_condition(
-        vertices: List[List[float]],
-        triangle_indices: List[Tuple[int, int, int]]) -> SymmetricBandMatrix:
+# Матрица теплопроводности
+def get_thermal_conductivity_matrix(vertices: List[List[float]],
+                                    triangle_indices: List[Tuple[int, int, int]]) -> SymmetricBandMatrix:
     vertices_num = len(vertices)
     triangle_elements_thermal_conductivity_matrices = []
 
@@ -72,6 +71,6 @@ def get_thermal_conductivity_matrix_wo_border_condition(
         ]) * (1 / (4 * triangle_area))
         triangle_elements_thermal_conductivity_matrices.append(triangle_element_thermal_conductivity_matrix)
 
-    thermal_conductivity_matrix_wo_border_conditions = scattering_procedure(
-        vertices_num, triangle_indices, triangle_elements_thermal_conductivity_matrices)
-    return thermal_conductivity_matrix_wo_border_conditions
+    thermal_conductivity_matrix = scattering_procedure(vertices_num, triangle_indices,
+                                                       triangle_elements_thermal_conductivity_matrices)
+    return thermal_conductivity_matrix

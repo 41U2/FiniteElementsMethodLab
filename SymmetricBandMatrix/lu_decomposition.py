@@ -45,15 +45,19 @@ class LUDecomposition:
         return "L: \n" + self.l.__str__() + "\nU: \n" + self.u.__str__()
 
 
-arrays = [
-    [1, 20, 7],
-    [4, 5],
-    [6]
-]
+def lu_decomposition_example():
+    matrix = Matrix(3, 3,
+                    [
+                        1, 20, 7,
+                        4, 5, 0,
+                        6, 0, 0
+                    ])
 
-mat = SymmetricBandMatrix(3, arrays)
-lu = LUDecomposition.lu_decompose_sbm(mat)
-print(lu)
+    mat = SymmetricBandMatrix(matrix)
+    lu = LUDecomposition.lu_decompose_sbm(mat)
+    print(lu)
+
+lu_decomposition_example()
 
 
 

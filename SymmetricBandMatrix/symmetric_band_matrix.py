@@ -1,13 +1,11 @@
-from typing import List
+from matrix import Matrix
 
 
 class SymmetricBandMatrix:
 
-    def __init__(self, size: int, arrays: List[List[float]]):
-        self.arrays = arrays
-        self.size = size
-
-        assert len(arrays) == size
+    def __init__(self, matrix: Matrix):
+        self.storage = matrix
+        self.size = matrix.n_rows
 
     def __call__(self, i_row: int, i_col: int) -> float:
         assert i_row < self.size
@@ -15,24 +13,25 @@ class SymmetricBandMatrix:
         assert i_row >= 0
         assert i_col >= 0
         if i_row <= i_col:
-            n_elements = len(self.arrays[i_row])
-            if i_col >= i_row + n_elements:
-                return 0
-            return self.arrays[i_row][i_col - i_row]
+            return self.storage(i_row, i_col - i_row)
 
         return self(i_col, i_row)
 
+    def set_value(self, i_row: int, i_col: int, value: float):
+        if i_row > i_col:
+            return
+        self.storage.set_value(i_row, i_col - i_row, value)
+
     def __add__(self, band_matrix: "SymmetricBandMatrix") -> "SymmetricBandMatrix":
-        assert self.size == band_matrix.size
-        n_rows = len(self.arrays)
-        assert n_rows == len(band_matrix.arrays)
-        result_arrays = self.arrays
-        for i_row in range(n_rows):
-            n_cols = len(self.arrays[i_row])
-            assert n_cols == len(band_matrix.arrays[i_row])
-            for i_col in range(n_cols):
-                result_arrays[i_row][i_col] += band_matrix.arrays[i_row][i_col]
-        return SymmetricBandMatrix(self.size, result_arrays)
+        return SymmetricBandMatrix(self.storage + band_matrix.storage)
+
+    def __mul__(self, value: float) -> "SymmetricBandMatrix":
+        return SymmetricBandMatrix(self.storage * value)
+
+    @staticmethod
+    def zeros(n_rows: int, band_width: int):
+        assert band_width <= n_rows
+        return SymmetricBandMatrix(Matrix.zeros(n_rows, band_width))
 
     def __str__(self):
         result_str = ""
@@ -44,24 +43,27 @@ class SymmetricBandMatrix:
 
 
 def symmetric_band_matrix_example():
-    arrays_1 = [
-        [1, 2, 0, 3],
-        [4],
-        [6, 2],
-        [-10]
-    ]
+    mat_1 = Matrix(3, 3, [
+        1, 20, 7,
+        4, 5, 0,
+        6, 0, 0
+    ])
 
-    arrays_2 = [
-        [1, 0.1, 14, -5],
-        [4],
-        [6, 3],
-        [9.9]
-    ]
+    mat_2 = Matrix(3, 3, [
+        -1, 12, 3,
+        4, 0.4, 0,
+        -100, 0, 0
+    ])
 
-    band_matrix_1 = SymmetricBandMatrix(4, arrays_1)
-    band_matrix_2 = SymmetricBandMatrix(4, arrays_2)
+    band_matrix_1 = SymmetricBandMatrix(mat_1)
+    band_matrix_2 = SymmetricBandMatrix(mat_2)
+    band_matrix_zeros = SymmetricBandMatrix.zeros(3, 3)
+    band_matrix_zeros.set_value(0, 2, 15)
+    print(band_matrix_zeros)
 
-    print(band_matrix_1 + band_matrix_2)
+    sum = band_matrix_1 + band_matrix_2 * -1
+    #sum.set_value(0, 1, 0.1)
+    print(sum)
 
 
 #symmetric_band_matrix_example()

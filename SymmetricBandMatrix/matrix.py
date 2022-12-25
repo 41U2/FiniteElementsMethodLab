@@ -16,6 +16,20 @@ class Matrix:
         assert i_col >= 0
         return self.values[self.n_cols * i_row + i_col]
 
+    def __add__(self, matrix: "Matrix") -> "Matrix":
+        assert self.n_cols == matrix.n_cols
+        assert self.n_rows == matrix.n_rows
+        result_values = self.values
+        for i in range(self.n_cols * self.n_rows):
+            result_values[i] += matrix.values[i]
+        return Matrix(self.n_rows, self.n_cols, result_values)
+
+    def __mul__(self, value: float) -> "Matrix":
+        result_values = self.values
+        for i in range(self.n_cols * self.n_rows):
+            result_values[i] *= value
+        return Matrix(self.n_rows, self.n_cols, result_values)
+
     def set_value(self, i_row: int, i_col: int, value: float):
         assert i_row < self.n_rows
         assert i_row >= 0

@@ -45,7 +45,7 @@ def CuthillMcKee(adjacency_matrix: List[List[float]]) -> Dict[int, int]:
         nodes.append(neighbours[0])
         neighbours = neighbours[1:]
     # Возвращаем словарь для перехода от старой нумерации узлов к новой
-    old_to_new_indexes = {}
+    old_to_new_indices = {}
     for index, value in enumerate(nodes[::-1]):
-        old_to_new_indexes[value] = index
-    return old_to_new_indexes
+        old_to_new_indices[value] = index
+    return old_to_new_indices

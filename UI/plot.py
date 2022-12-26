@@ -1,3 +1,4 @@
+import numpy as np
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtWidgets import QDialog, QPushButton, QVBoxLayout, QSlider, QLabel
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -112,10 +113,12 @@ class Window(QDialog):
         # setting layout to the main window
         self.setLayout(layout)
 
+        # self.slider.senderSignalIndex()
+
     def update_slider(self):
         self.result_label.setText(f'Значение t: {self.slider.value() / 10000}')
 
-    def plot(self, points):
+    def plot(self, points, temperature: float):
 
         # [
         #     ([1, 2], 0.12),
@@ -125,31 +128,47 @@ class Window(QDialog):
         # tобщ
         # t1, t2 ... tобщ
 
-        points = [
-            ([1, 1], 34),
-            ([2, 1], 43),
-            ([3, 1], 11),
-            ([1, 2], 89),
-            ([2, 2], 19),
-            ([3, 2], 67),
-        ]
+        # points = [
+        #     ([1, 1], 34),
+        #     ([2, 1], 43),
+        #     ([3, 1], 11),
+        #     ([1, 2], 89),
+        #     ([2, 2], 19),
+        #     ([3, 2], 67),
+        # ]
 
         self.figure.clear()
 
-        test_data = TestDataForPlot()
+        # test_data = TestDataForPlot()
 
         self.figure.clear()
 
         ax = self.figure.add_subplot()
 
-        x_data = [point[0][0] for point in points]
-        y_data = [point[0][1] for point in points]
-        c_values = [point[1] for point in points]
+        x_data = [point[0] for point in points]
+        y_data = [point[1] for point in points]
+        rgb = [[element / max(temperature), 0, 0] for element in temperature]
+        rgb_final = []
+        for elem in rgb:
+            if elem[0] < 0:
+                elem[0] = 0
+            rgb_final.append(elem)
 
-        ax.scatter(x_data, y_data, s=300, c=c_values, cmap='OrRd', edgecolors='black', linewidths=1,
-                   norm=plt.Normalize(vmin=min(c_values), vmax=max(c_values)))
+        print('В ГРАФИКЕ', temperature)
+
+        ax.scatter(x_data, y_data, s=300, c=rgb_final, edgecolors='black', linewidths=1)
         ax.grid(True)
 
         # refresh canvas
+
+        # temperature, xedges, yedges = np.histogram2d(x_data, y_data, bins=50)
+        # extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
+        #
+        # plt.clf()
+        # plt.imshow(temperature, extent=extent, origin='lower',
+        #            interpolation='bilinear')
+        #
+        # plt.show()
+
         self.canvas.draw()
 

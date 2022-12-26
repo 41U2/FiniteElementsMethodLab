@@ -90,7 +90,7 @@ def applying_boundary_conditions_test():
 
 
 def source_function_1(vertex: List[float], t: float) -> float:
-    return 0
+    return -1
 
 
 def initial_function_1(vertex: List[float]) -> float:
@@ -112,7 +112,7 @@ def initial_function_3(vertex: List[float]) -> float:
 
 
 def boundary_function_1(vertex: List[float], t: float) -> float:
-    return initial_function_1(vertex) + t
+    return initial_function_1(vertex) - min(t, 1)
 
 
 def boundary_function_2(vertex: List[float], t: float) -> float:
@@ -166,7 +166,7 @@ def thermal_conductivity_solver_test():
         initial_function_1,
         boundary_function_1,
         source_function_1,
-        0.5,
+        1.5,
         0.1
     )
     kek = 3
@@ -223,5 +223,5 @@ if __name__ == "__main__":
     # thermal_conductivity_matrix_test()
     # source_vector_test()
     # applying_boundary_conditions_test()
-    # thermal_conductivity_solver_test()
-    triangulation_test()
+    thermal_conductivity_solver_test()
+    # triangulation_test()

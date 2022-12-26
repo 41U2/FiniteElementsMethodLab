@@ -80,9 +80,11 @@ class ThermalConductivitySolver:
             value = initial_function(self.vertices[i_vertex])
             current_values.set_value(i_vertex, 0, value)
 
-        current_time = dt
+        # current_time = dt
+        current_time = 0
         print(f"Current time: 0", "\nCurrent_values =\n", current_values)
         while current_time + dt < time:
+            current_time += dt
             current_values = self.__euler_step__(
                 self.vertices,
                 self.triangle_vertex_indices,
@@ -96,7 +98,6 @@ class ThermalConductivitySolver:
                 dt
             )
             print(f"Current time: {current_time}", "\nCurrent_values =\n", current_values)
-            current_time += dt
 
         last_dt = time - current_time
         current_values = self.__euler_step__(

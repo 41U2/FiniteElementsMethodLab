@@ -19,9 +19,12 @@ class MainPage:
         self.psi = None
         self.t = None
         self.plot = None
+        self.points = 1
+        self.step = 0.05
+        self.t_values = [0.05, 0.1, 0.15, 0.2, 0.25]
 
         self.main_page.init_input_params_button_action(lambda: self.init_input_params())
-        self.main_page.create_plot_button_action(lambda: self.create_plot())
+        self.main_page.create_plot_button_action(lambda: self.create_plot(self.points, self.t_values, self.step))
 
         self.main_window.show()
 
@@ -39,14 +42,20 @@ class MainPage:
 
         print('input params are set')
 
-        self.invoke_triangulation()
+        self.invoke_calculation()
 
-    def invoke_triangulation(self):
-        triangulation(self.x0, self.y0, self.nx, self.ny, self.hx, self.hy)
-        print('triangulation processed')
+    def invoke_calculation(self):
 
-    def create_plot(self):
-        self.plot = Window()
+        print('calculation processed')
+
+    def create_plot(self, points, t_values, step):
+        # t_values - возможные значения t
+        # points:
+        # [
+        #     ([1, 2], 0.12),
+        #     ([2, 2], 0.3),
+        # ]
+        self.plot = Window(points, t_values, step)
         self.plot.window().show()
         print('plot created')
 

@@ -11,12 +11,8 @@ import math
 class Window(QDialog):
 
     # constructor
-    def __init__(self, points, t_values, step, parent=None):
+    def __init__(self, t_values, step, parent=None):
         super(Window, self).__init__(parent)
-
-        self.points = points
-        self.t_values = t_values
-        self.step = step
 
         self.figure = plt.figure()
 
@@ -26,7 +22,7 @@ class Window(QDialog):
 
         self.button = QPushButton('Построить график')
 
-        self.button.clicked.connect(lambda: self.plot(self.points, self.t_values))
+        # self.button.clicked.connect(lambda: self.plot(self.points, self.t_values))
 
 
         font = QtGui.QFont()
@@ -67,9 +63,11 @@ class Window(QDialog):
         # adding push button to the layout
         layout.addWidget(self.button)
 
-        print(self.t_values)
+        # t_values = [0.05, 0.1, 0.15, 0.2, 0.25]
+        # step = 0.05
+
         tmp_t_values = []
-        for t_value in self.t_values:
+        for t_value in t_values:
             # print(10**(abs(str(t_value).find('.') - len(str(t_value))) - 1))
             # t_value *= 10**(abs(str(t_value).find('.') - len(str(t_value))) - 1)
             t_value = math.trunc(t_value * 10000)
@@ -77,19 +75,18 @@ class Window(QDialog):
             # print(t_value)
             tmp_t_values.append(t_value)
 
-        self.t_values = tmp_t_values
-        print(self.t_values, 'сука')
+        t_values = tmp_t_values
 
         self.slider = QSlider(Qt.Orientation.Horizontal, self)
-        self.slider.setRange(self.t_values[0], self.t_values[-1])
-        print(self.t_values[0], self.t_values[-1])
-        self.slider.setValue(self.t_values[0])
+        self.slider.setRange(tmp_t_values[0], tmp_t_values[-1])
+        print(tmp_t_values[0], tmp_t_values[-1])
+        self.slider.setValue(tmp_t_values[0])
 
 
-        self.step = math.trunc(self.step * 10000)
-        self.slider.setSingleStep(self.step)
-        self.slider.setTickInterval(self.step)
-        self.slider.setPageStep(self.step)
+        self.step = math.trunc(step * 10000)
+        self.slider.setSingleStep(step * 10000)
+        self.slider.setTickInterval(step* 10000)
+        self.slider.setPageStep(step* 10000)
         self.slider.setTickPosition(QSlider.TickPosition.TicksAbove)
 
         print('STEP', self.step)
@@ -110,16 +107,15 @@ class Window(QDialog):
         # layout.addRow(slider)
         # layout.addRow(self.result_label)
 
+        self.result_label.setText(f'Значение t: {tmp_t_values[0] / 10000}')
+
         # setting layout to the main window
         self.setLayout(layout)
 
     def update_slider(self):
         self.result_label.setText(f'Значение t: {self.slider.value() / 10000}')
 
-    def plot(self, points, t_values):
-
-        print(points)
-        print(t_values)
+    def plot(self, points):
 
         # [
         #     ([1, 2], 0.12),
@@ -129,6 +125,15 @@ class Window(QDialog):
         # tобщ
         # t1, t2 ... tобщ
 
+        points = [
+            ([1, 1], 34),
+            ([2, 1], 43),
+            ([3, 1], 11),
+            ([1, 2], 89),
+            ([2, 2], 19),
+            ([3, 2], 67),
+        ]
+
         self.figure.clear()
 
         test_data = TestDataForPlot()
@@ -137,11 +142,12 @@ class Window(QDialog):
 
         ax = self.figure.add_subplot()
 
-        rgb = [[value_data.value, 0, 0] for value_data in test_data.test_data]
+        x_data = [point[0][0] for point in points]
+        y_data = [point[0][1] for point in points]
+        c_values = [point[1] for point in points]
 
-        ax.scatter([x_data.x for x_data in test_data.test_data],
-                   [y_data.y for y_data in test_data.test_data], s=300,
-                   c=rgb, edgecolors='black', linewidths=1)
+        ax.scatter(x_data, y_data, s=300, c=c_values, cmap='OrRd', edgecolors='black', linewidths=1,
+                   norm=plt.Normalize(vmin=min(c_values), vmax=max(c_values)))
         ax.grid(True)
 
         # refresh canvas

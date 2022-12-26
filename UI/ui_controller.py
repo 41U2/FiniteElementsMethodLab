@@ -83,8 +83,15 @@ class MainPage:
         print('triangulation processed')
 
     def create_plot(self):
-        self.plot = Window()
+        self.plot = Window([0.05, 0.1, 0.15, 0.2, 0.25], 0.05)
+        self.refresh_plot()
+        self.plot.button.clicked.connect(lambda: self.refresh_plot())
         self.plot.window().show()
         print('plot created')
+
+    def refresh_plot(self):
+        current_t = self.plot.slider.value()
+        print('current_t:', current_t / 10000)
+        self.plot.button.clicked.connect(lambda: self.plot.plot("TEST DATA"))
 
 

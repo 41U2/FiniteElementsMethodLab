@@ -30,7 +30,9 @@ def get_source_vector(
 
 # Матрица демпфирования
 def get_damping_matrix(vertices: List[List[float]],
-                       triangle_indices: List[Tuple[int, int, int]]) -> SymmetricBandMatrix:
+                       triangle_indices: List[Tuple[int, int, int]],
+                       band_width: int
+                       ) -> SymmetricBandMatrix:
     vertices_num = len(vertices)
     triangle_elements_damping_matrices = []
 
@@ -42,13 +44,15 @@ def get_damping_matrix(vertices: List[List[float]],
             1, 1, 2]) * (triangle_area / 12)
         triangle_elements_damping_matrices.append(triangle_element_damping_matrix)
 
-    damping_matrix = scattering_procedure(vertices_num, triangle_indices, triangle_elements_damping_matrices)
+    damping_matrix = scattering_procedure(vertices_num, triangle_indices, triangle_elements_damping_matrices, band_width)
     return damping_matrix
 
 
 # Матрица теплопроводности
 def get_thermal_conductivity_matrix(vertices: List[List[float]],
-                                    triangle_indices: List[Tuple[int, int, int]]) -> SymmetricBandMatrix:
+                                    triangle_indices: List[Tuple[int, int, int]],
+                                    band_width: int
+                                    ) -> SymmetricBandMatrix:
     vertices_num = len(vertices)
     triangle_elements_thermal_conductivity_matrices = []
 
@@ -72,5 +76,5 @@ def get_thermal_conductivity_matrix(vertices: List[List[float]],
         triangle_elements_thermal_conductivity_matrices.append(triangle_element_thermal_conductivity_matrix)
 
     thermal_conductivity_matrix = scattering_procedure(vertices_num, triangle_indices,
-                                                       triangle_elements_thermal_conductivity_matrices)
+                                                       triangle_elements_thermal_conductivity_matrices, band_width)
     return thermal_conductivity_matrix

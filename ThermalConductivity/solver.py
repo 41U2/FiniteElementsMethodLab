@@ -24,7 +24,6 @@ class ThermalConductivitySolver:
         self.triangle_vertex_indices = deepcopy(triangle_vertex_indices)
         self.is_boundary_vertex = deepcopy(is_boundary_vertex)
 
-    # пока что не используем ширину ленты
     @staticmethod
     def thermal_conductivity_solver(
             vertices: List[List[float]],
@@ -32,8 +31,8 @@ class ThermalConductivitySolver:
             is_boundary_vertex: List[bool],
             band_width: int
     ):
-        thermal_conductivity_matrix = get_thermal_conductivity_matrix(vertices, triangle_vertex_indices)
-        damping_matrix = get_damping_matrix(vertices, triangle_vertex_indices)
+        thermal_conductivity_matrix = get_thermal_conductivity_matrix(vertices, triangle_vertex_indices, band_width)
+        damping_matrix = get_damping_matrix(vertices, triangle_vertex_indices, band_width)
         return ThermalConductivitySolver(
             thermal_conductivity_matrix,
             damping_matrix,

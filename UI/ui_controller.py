@@ -20,6 +20,8 @@ class MainPage:
         self.psi = None
         self.t = None
         self.plot = None
+        self.output = None
+        self.dt = 0.05
 
         self.main_page.init_input_params_button_action(lambda: self.init_input_params())
         self.main_page.create_plot_button_action(lambda: self.create_plot())
@@ -67,13 +69,12 @@ class MainPage:
         solver = ThermalConductivitySolver.thermal_conductivity_solver(
             vertices, triangle_indices, is_boundary_vertex, n_vertices
         )
-        dt = 0.05
-        output = solver.solve(
+        self.output = solver.solve(
             MainPage.initial_function,
             MainPage.boundary_function,
             MainPage.source_function,
             self.t,
-            dt
+            self.dt
         )
 
         print('triangulation processed')

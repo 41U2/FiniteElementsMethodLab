@@ -1,12 +1,14 @@
 from cmath import sqrt
 from typing import List
 
+from SymmetricBandMatrix.matrix import Matrix
 from ThermalConductivity.matrices import \
     get_damping_matrix, \
     get_thermal_conductivity_matrix, \
     get_source_vector
-from ThermalConductivity.utils import apply_boundary_conditions
 from ThermalConductivity.solver import ThermalConductivitySolver
+from ThermalConductivity.utils import apply_boundary_conditions
+from Triangulation.triangulation import triangulation
 
 
 def damping_matrix_test():
@@ -93,19 +95,19 @@ def source_function_1(vertex: List[float], t: float) -> float:
 
 def initial_function_1(vertex: List[float]) -> float:
     if vertex[0] != 0 or vertex[1] != 0:
-         return 2
+        return 2
     return -2
 
 
 def initial_function_2(vertex: List[float]) -> float:
     if vertex[0] != 0 and vertex[1] != 0:
-         return 2
+        return 2
     return -2
 
 
 def initial_function_3(vertex: List[float]) -> float:
     if vertex[0] == -1 and vertex[1] == -1:
-         return 2
+        return 2
     return -2
 
 
@@ -170,10 +172,56 @@ def thermal_conductivity_solver_test():
     kek = 3
 
 
+def triangulation_test():
+    x0 = 0
+    y0 = 1
+    nx = 5
+    ny = 2
+    hx = [1, 1, 1, 1]
+    hy = [-1]
+    # x0 = 0
+    # y0 = 1
+    # nx = 6
+    # ny = 3
+    # hx = [1, 1, 1, 1, 1]
+    # hy = [-1, -1]
+    vertices, adjacency_matrix, triangle_indices = triangulation(x0, y0, nx, ny, hx, hy)
+    print('vertices:\n', vertices)
+    print('adjacency_matrix:\n', adjacency_matrix)
+    print('triangle_indices:\n', triangle_indices)
+    expected_vertices = [(0, [0, 1]), (1, [1, 1]), (2, [2, 1]), (3, [3, 1]), (4, [4, 1]), (5, [0, 0]), (6, [1, 0]),
+                         (7, [2, 0]), (8, [3, 0]), (9, [4, 0])]
+    expected_adjacency_matrix = Matrix(nx * ny, nx * ny, [
+        1, 1, 0, 0, 0, 1, 1, 0, 0, 0,
+        1, 1, 1, 0, 0, 0, 1, 1, 0, 0,
+        0, 1, 1, 1, 0, 0, 0, 1, 1, 0,
+        0, 0, 1, 1, 1, 0, 0, 0, 1, 1,
+        0, 0, 0, 1, 1, 0, 0, 0, 0, 1,
+        1, 0, 0, 0, 0, 1, 1, 0, 0, 0,
+        1, 1, 0, 0, 0, 1, 1, 1, 0, 0,
+        0, 1, 1, 0, 0, 0, 1, 1, 1, 0,
+        0, 0, 1, 1, 0, 0, 0, 1, 1, 1,
+        0, 0, 0, 1, 1, 0, 0, 0, 1, 1
+    ])
+    expected_triangle_indices = [
+        (0, 6, 1),
+        (0, 5, 6),
+        (1, 7, 2),
+        (1, 6, 7),
+        (2, 8, 3),
+        (2, 7, 8),
+        (3, 9, 4),
+        (3, 8, 9)
+    ]
+    assert vertices == expected_vertices
+    assert adjacency_matrix == expected_adjacency_matrix
+    assert triangle_indices == expected_triangle_indices
+
 
 if __name__ == "__main__":
     # damping_matrix_test()
     # thermal_conductivity_matrix_test()
     # source_vector_test()
     # applying_boundary_conditions_test()
-    thermal_conductivity_solver_test()
+    # thermal_conductivity_solver_test()
+    triangulation_test()

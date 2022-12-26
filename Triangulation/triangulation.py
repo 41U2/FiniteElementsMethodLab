@@ -92,8 +92,11 @@ from SymmetricBandMatrix.matrix import Matrix
 
 # Метод, в котором реализованы формирование списка вершин разбиения, матрицы смежности и
 # списка вершин, составляющих треугольные элементы
-def triangulation(x_start: float, y_start: float, vertices_num_x: int, vertices_num_y: int, steps_x: List[float],
-                  steps_y: List[float]) -> Tuple[List[Tuple[int, List[float]]], Matrix, List[Tuple[int, int, int]]]:
+def triangulation(x_start: float, y_start: float,
+                  steps_x: List[float], steps_y: List[float]
+                  ) -> Tuple[List[Tuple[int, List[float]]], Matrix, List[Tuple[int, int, int]]]:
+    vertices_num_x = len(steps_x) + 1
+    vertices_num_y = len(steps_y) + 1
     vertices_num = vertices_num_x * vertices_num_y
     vertices = []
     adjacency_matrix = Matrix.set_to_identity(vertices_num, vertices_num)

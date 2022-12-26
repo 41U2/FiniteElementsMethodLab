@@ -175,23 +175,19 @@ def thermal_conductivity_solver_test():
 def triangulation_test():
     x0 = 0
     y0 = 1
-    nx = 5
-    ny = 2
     hx = [1, 1, 1, 1]
     hy = [-1]
     # x0 = 0
     # y0 = 1
-    # nx = 6
-    # ny = 3
     # hx = [1, 1, 1, 1, 1]
     # hy = [-1, -1]
-    vertices, adjacency_matrix, triangle_indices = triangulation(x0, y0, nx, ny, hx, hy)
+    vertices, adjacency_matrix, triangle_indices = triangulation(x0, y0, hx, hy)
     print('vertices:\n', vertices)
     print('adjacency_matrix:\n', adjacency_matrix)
     print('triangle_indices:\n', triangle_indices)
     expected_vertices = [(0, [0, 1]), (1, [1, 1]), (2, [2, 1]), (3, [3, 1]), (4, [4, 1]), (5, [0, 0]), (6, [1, 0]),
                          (7, [2, 0]), (8, [3, 0]), (9, [4, 0])]
-    expected_adjacency_matrix = Matrix(nx * ny, nx * ny, [
+    expected_adjacency_matrix = Matrix(10, 10, [
         1, 1, 0, 0, 0, 1, 1, 0, 0, 0,
         1, 1, 1, 0, 0, 0, 1, 1, 0, 0,
         0, 1, 1, 1, 0, 0, 0, 1, 1, 0,

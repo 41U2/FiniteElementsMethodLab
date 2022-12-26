@@ -69,8 +69,9 @@ class MainPage:
         n_vertices = len(vertices_tuple)
         vertices = [elem[1] for elem in vertices_tuple]
         is_boundary_vertex = [elem[1] for elem in is_boundary_vertex_tuple]
+        band_width = band_width_from_triangle_vertex_indices(triangle_indices)
         solver = ThermalConductivitySolver.thermal_conductivity_solver(
-            vertices, triangle_indices, is_boundary_vertex, n_vertices
+            vertices, triangle_indices, is_boundary_vertex, band_width
         )
         self.output = deepcopy(solver.solve(
             MainPage.initial_function,

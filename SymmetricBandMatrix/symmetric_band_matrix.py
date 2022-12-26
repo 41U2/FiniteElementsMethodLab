@@ -13,12 +13,20 @@ class SymmetricBandMatrix:
         assert i_row >= 0
         assert i_col >= 0
         if i_row <= i_col:
+            if i_row < 0 or i_row >= self.storage.n_rows:
+                return 0
+            if i_col - i_row < 0 or i_col - i_row >= self.storage.n_cols:
+                return 0
             return self.storage(i_row, i_col - i_row)
 
         return self(i_col, i_row)
 
     def set_value(self, i_row: int, i_col: int, value: float):
         if i_row > i_col:
+            return
+        if i_row < 0 or i_row >= self.storage.n_rows:
+            return
+        if i_col - i_row < 0 or i_col - i_row >= self.storage.n_cols:
             return
         self.storage.set_value(i_row, i_col - i_row, value)
 

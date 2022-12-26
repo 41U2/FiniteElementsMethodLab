@@ -41,8 +41,9 @@ def integrate_by_triangle(
 
 
 def scattering_procedure(result_matrix_size: int, triangle_indices: List[Tuple[int, int, int]],
-                         triangle_elements_matrices: List[Matrix]) -> SymmetricBandMatrix:
-    result_matrix = SymmetricBandMatrix.zeros(result_matrix_size, result_matrix_size)
+                         triangle_elements_matrices: List[Matrix],
+                         band_width: int) -> SymmetricBandMatrix:
+    result_matrix = SymmetricBandMatrix.zeros(result_matrix_size, band_width)
 
     for matrix_index, single_triangle_indices in enumerate(triangle_indices):
         i, j, k = single_triangle_indices

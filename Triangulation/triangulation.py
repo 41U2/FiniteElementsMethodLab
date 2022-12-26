@@ -79,3 +79,21 @@ def triangulation(
         adjacency_matrix[(vertices_num_x * i) + vertices_num_x + 1 + j][(vertices_num_x * i) + 1 + j] = 1
         adjacency_matrix[(vertices_num_x * i) + 1 + j][(vertices_num_x * i) + vertices_num_x + 1 + j] = 1
     return vertices, adjacency_matrix, triangle_indices, is_boundary_vertex
+
+
+def band_width_from_triangle_vertex_indices(
+    triangle_indices: List[Tuple[int, int, int]]
+) -> int:
+    max_width = 0
+    for i, j, k in triangle_indices:
+        diff_1 = abs(i - j)
+        diff_2 = abs(j - k)
+        diff_3 = abs(k - i)
+        if diff_1 > max_width:
+            max_width = diff_1
+        if diff_2 > max_width:
+            max_width = diff_2
+        if diff_3 > max_width:
+            max_width = diff_3
+
+    return max_width + 1

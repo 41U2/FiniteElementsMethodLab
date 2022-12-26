@@ -1,6 +1,7 @@
 from cmath import sqrt
 from typing import List
 
+from CuthillMcKee.CuthillMcKee import CuthillMcKee
 from SymmetricBandMatrix.matrix import Matrix
 from ThermalConductivity.matrices import \
     get_damping_matrix, \
@@ -175,13 +176,15 @@ def thermal_conductivity_solver_test():
 def triangulation_test():
     x0 = 0
     y0 = 1
+    nx = 5
+    ny = 2
     hx = [1, 1, 1, 1]
     hy = [-1]
     # x0 = 0
     # y0 = 1
     # hx = [1, 1, 1, 1, 1]
     # hy = [-1, -1]
-    vertices, adjacency_matrix, triangle_indices = triangulation(x0, y0, hx, hy)
+    vertices, adjacency_matrix, triangle_indices = triangulation(x0, y0, nx, ny, hx, hy)
     print('vertices:\n', vertices)
     print('adjacency_matrix:\n', adjacency_matrix)
     print('triangle_indices:\n', triangle_indices)
@@ -214,6 +217,16 @@ def triangulation_test():
     assert triangle_indices == expected_triangle_indices
 
 
+def cuthill_test():
+    x0 = 0
+    y0 = 1
+    hx = [1, 1, 1, 1]
+    hy = [-1]
+    vertices, adjacency_matrix, triangle_indices = triangulation(x0, y0, hx, hy)
+    result = CuthillMcKee(adjacency_matrix, len(hx) + 1, len(hy) + 1)
+    print('result:\n', result)
+
+
 if __name__ == "__main__":
     # damping_matrix_test()
     # thermal_conductivity_matrix_test()
@@ -221,3 +234,4 @@ if __name__ == "__main__":
     # applying_boundary_conditions_test()
     # thermal_conductivity_solver_test()
     triangulation_test()
+    # cuthill_test()

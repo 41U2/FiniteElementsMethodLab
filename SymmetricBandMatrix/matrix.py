@@ -39,7 +39,18 @@ class Matrix:
 
     @staticmethod
     def zeros(n_rows: int, n_cols: int):
-        array = [0 for i in range (n_rows * n_cols)]
+        array = [0 for i in range(n_rows * n_cols)]
+        return Matrix(n_rows, n_cols, array)
+
+    @staticmethod
+    def set_to_identity(n_rows: int, n_cols: int):
+        array = []
+        for i_row in range(n_rows):
+            for i_col in range(n_cols):
+                if i_col == i_row:
+                    array.append(1)
+                else:
+                    array.append(0)
         return Matrix(n_rows, n_cols, array)
 
     def __str__(self):

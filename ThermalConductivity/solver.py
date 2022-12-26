@@ -108,7 +108,7 @@ class ThermalConductivitySolver:
             self.damping_matrix,
             boundary_function,
             source_function,
-            current_time,
+            time,
             last_dt
         )
         print(f"Current time: {time}", "\nCurrent_values =\n", current_values)

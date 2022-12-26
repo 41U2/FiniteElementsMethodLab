@@ -69,7 +69,6 @@ class LUDecomposition:
         second = LUDecomposition.solve_upper_matrix(self.u, first)
         return second
 
-
     def __str__(self):
         return "L: \n" + self.l.__str__() + "\nU: \n" + self.u.__str__()
 

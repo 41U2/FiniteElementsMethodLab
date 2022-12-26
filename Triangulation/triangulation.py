@@ -1,90 +1,3 @@
-# ЗАДАНИЕ НАЧАЛЬНЫХ УСЛОВИЙ
-# Nx = 4;
-# Ny = 3;
-# x0 = 0;
-# y0 = 0;
-# hx = [0, 1, 2 , 3];
-# hy = [0, 2, 1];
-#
-#
-# def triangulation(x0, y0, Nx, Ny, hx, hy):
-#     # ФОРМИРОВАНИЕ СПИСКА ВЕРШИН
-#     points = []
-#     i = 0
-#     points.append([x0 + hx[0], y0 + hy[0]])
-#
-#     while i < Nx * Ny:
-#         j = i
-#         if j >= Nx:
-#             j = j % Nx
-#         points.append([points[i % Nx][0] + hx[j], points[i - j][1] + hy[i // Nx]])
-#         i += 1
-#     points.pop(0)
-#
-#     # ФОРМИРОВАНИЕ МАТРИЦЫ СМЕЖНОСТИ - СООТВЕТСТВИЕ КАЖДОЙ ВЕРШИНЕ НОМЕРОВ СВЯЗАННЫХ ВЕРШИН В ПОРЯДКЕ ВОЗРАСТАНИЯ СТЕПЕНЕЙ СВОБОДЫ
-#     # ФОРМИРОВАНИЕ МАССИВА СТЕПЕНЕЙ СВОБОДЫ ДЛЯ КАЖДОЙ ВЕРШИНЫ
-#     AdjMatrix = []  # Adjacency Matrix
-#     FrDeg = []  # Freedom Degree
-#     i = 0
-#     while i < Nx * Ny:
-#         # вершина - левый нижний или правый верхний угол
-#         if i == 0:
-#             AdjMatrix.append([i + 1, i + Nx])
-#             FrDeg.append(2)
-#         elif i == (Nx * Ny - 1):
-#             AdjMatrix.append([i - Nx, i - 1])
-#             FrDeg.append(2)
-#         # вершина - правый нижний или левый верхний угол
-#         elif i == Nx - 1:
-#             AdjMatrix.append([i - 1, i + Nx, i + (Nx - 1)])
-#             FrDeg.append(3)
-#         elif i == Nx * (Ny - 1):
-#             AdjMatrix.append([i - Nx, i + 1, i - (Nx - 1)])
-#             FrDeg.append(3)
-#         # вершина - нижняя или верхняя сторона, за исключением углов
-#         elif 0 < i < Nx:
-#             if i == 1:
-#                 AdjMatrix.append([i - 1, i + 1, i + Nx - 1, i + Nx])
-#             elif i == Nx - 2:
-#                 AdjMatrix.append([i + 1, i - 1, i + Nx - 1, i + Nx])
-#             FrDeg.append(4)
-#         elif Nx * (Ny - 1) < i < Nx * Ny - 1:
-#             if i == Nx * Ny - 2:
-#                 AdjMatrix.append([i + 1, i - 1, i - (Nx - 1), i - Nx])
-#             elif i == Nx * (Ny - 1) + 1:
-#                 AdjMatrix.append([i - 1, i + 1, i - (Nx - 1), i - Nx])
-#             FrDeg.append(4)
-#         # вершина - правая или левая сторона
-#         elif i % Nx == Nx - 1:
-#             if i == Nx * (Ny - 1) - 1:
-#                 AdjMatrix.append([i + Nx, i - Nx, i + Nx - 1, i - 1])
-#             elif i == 2 * Nx - 1:
-#                 AdjMatrix.append([i - Nx, i + Nx, i + Nx - 1, i - 1])
-#             FrDeg.append(4)
-#         elif i % Nx == 0:
-#             if i == Nx:
-#                 AdjMatrix.append([i - Nx, i + Nx, i - (Nx - 1), i + 1])
-#             elif i == Nx * (Ny - 2):
-#                 AdjMatrix.append([i + Nx, i - Nx, i - (Nx - 1), i + 1])
-#             FrDeg.append(4)
-#         # вершина лежит внутри фигуры
-#         else:
-#             if i == Nx + 1:
-#                 AdjMatrix.append([i + Nx - 1, i - Nx + 1, i - Nx, i + Nx, i - 1, i + 1])
-#             elif i == Nx * (Ny - 2) + 1:
-#                 AdjMatrix.append([i - Nx + 1, i + Nx - 1, i - Nx, i + Nx, i - 1, i + 1])
-#             elif i == 2 * (Nx - 1):
-#                 AdjMatrix.append([i - Nx + 1, i + Nx - 1, i - Nx, i + Nx, i + 1, i - 1])
-#             elif i == Nx * (Ny - 1) - 2:
-#                 AdjMatrix.append([i + Nx - 1, i - Nx + 1, i - Nx, i + Nx, i + 1, i - 1])
-#             else:
-#                 AdjMatrix.append([i + Nx - 1, i - Nx + 1, i - Nx, i + Nx, i + 1, i - 1])
-#             FrDeg.append(6)
-#         i += 1
-#     return [points, AdjMatrix]
-#
-# print(triangulation(x0, y0, Nx, Ny, hx, hy)[0]); - Вывод сформированного массива точек
-# print(triangulation(x0, y0, Nx, Ny, hx, hy)[1]); - Вывод Матрицы смежности
 from typing import List, Tuple
 
 
@@ -132,34 +45,37 @@ def triangulation(
                 is_boundary_vertex.append((vertex_index, False))
             vertex_index += 1
     # Заполняем матрицу смежности
-    # Для всех горизонтальных сторон прямоугольной области, кроме последней
+    # Для первой горизонтальной строки
+    for j in range(vertices_num_x - 1):
+        # Добавляем единицу в строку
+        adjacency_matrix[j][j + 1] = 1
+        # Зеркально добавляем единицу в столбец
+        adjacency_matrix[j + 1][j] = 1
+    # Для всех горизонтальных сторон прямоугольной области, кроме первой
     for i in range(vertices_num_y - 1):
         # Тут каждая вершина связывается с тремя другими
         for j in range(vertices_num_x - 1):
             # Сохраняем индексы вершин, образующие треугольные элементы
             triangle_indices.append((
-                (vertices_num_x * i) + j,
-                (vertices_num_x * i) + vertices_num_x + 1 + j,
-                (vertices_num_x * i) + 1 + j
-            ))
-            triangle_indices.append((
-                (vertices_num_x * i) + j,
                 (vertices_num_x * i) + vertices_num_x + j,
+                (vertices_num_x * i) + 1 + j,
                 (vertices_num_x * i) + vertices_num_x + 1 + j
             ))
+            triangle_indices.append((
+                (vertices_num_x * i) + vertices_num_x + j,
+                (vertices_num_x * i) + j,
+                (vertices_num_x * i) + 1 + j
+            ))
             # Добавляем единицы в строку
-            adjacency_matrix[(vertices_num_x * i) + j][(vertices_num_x * i) + 1 + j] = 1
-            adjacency_matrix[(vertices_num_x * i) + j][(vertices_num_x * i) + vertices_num_x + j] = 1
-            adjacency_matrix[(vertices_num_x * i) + j][(vertices_num_x * i) + vertices_num_x + 1 + j] = 1
-            # Добавляем единицы зеркально в столбец
-            adjacency_matrix[(vertices_num_x * i) + 1 + j][(vertices_num_x * i) + j] = 1
+            adjacency_matrix[(vertices_num_x * i) + vertices_num_x + j][(vertices_num_x * i) + vertices_num_x + 1 + j] = 1
+            adjacency_matrix[(vertices_num_x * i) + vertices_num_x + j][(vertices_num_x * i) + 1 + j] = 1
             adjacency_matrix[(vertices_num_x * i) + vertices_num_x + j][(vertices_num_x * i) + j] = 1
-            adjacency_matrix[(vertices_num_x * i) + vertices_num_x + 1 + j][(vertices_num_x * i) + j] = 1
+            # Добавляем единицы зеркально в столбец
+            adjacency_matrix[(vertices_num_x * i) + vertices_num_x + 1 + j][(vertices_num_x * i) + vertices_num_x + j] = 1
+            adjacency_matrix[(vertices_num_x * i) + 1 + j][(vertices_num_x * i) + vertices_num_x + j] = 1
+            adjacency_matrix[(vertices_num_x * i) + j][(vertices_num_x * i) + vertices_num_x + j] = 1
         # Связь последней вершины в строке с нижестоящей (добавление в строку и в столбец)
-        adjacency_matrix[vertices_num_x + (vertices_num_x * i) - 1][2 * vertices_num_x + (vertices_num_x * i) - 1] = 1
-        adjacency_matrix[2 * vertices_num_x + (vertices_num_x * i) - 1][vertices_num_x + (vertices_num_x * i) - 1] = 1
-    # Для последней горизонтальной строки (добавление в строку и столбец)
-    for j in range(vertices_num_x - 1):
-        adjacency_matrix[vertices_num_x * (vertices_num_y - 1) + j][vertices_num_x * (vertices_num_y - 1) + j + 1] = 1
-        adjacency_matrix[vertices_num_x * (vertices_num_y - 1) + j + 1][vertices_num_x * (vertices_num_y - 1) + j] = 1
+        j = vertices_num_x - 2
+        adjacency_matrix[(vertices_num_x * i) + vertices_num_x + 1 + j][(vertices_num_x * i) + 1 + j] = 1
+        adjacency_matrix[(vertices_num_x * i) + 1 + j][(vertices_num_x * i) + vertices_num_x + 1 + j] = 1
     return vertices, adjacency_matrix, triangle_indices, is_boundary_vertex

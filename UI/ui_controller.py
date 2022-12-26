@@ -69,9 +69,11 @@ class MainPage:
         n_vertices = len(vertices_tuple)
         vertices = [elem[1] for elem in vertices_tuple]
         is_boundary_vertex = [elem[1] for elem in is_boundary_vertex_tuple]
+        band_width = band_width_from_triangle_vertex_indices(triangle_indices)
         solver = ThermalConductivitySolver.thermal_conductivity_solver(
-            vertices, triangle_indices, is_boundary_vertex, n_vertices
+            vertices, triangle_indices, is_boundary_vertex, band_width
         )
+        # [[t, [u1, u2, u3, u4...]]] - температура в вершинах для определённого t
         self.output = deepcopy(solver.solve(
             MainPage.initial_function,
             MainPage.boundary_function,
@@ -79,11 +81,13 @@ class MainPage:
             self.t,
             self.dt
         ))
+        # [[x, y], [x, y]]
         self.vertices = deepcopy(vertices)
         print('triangulation processed')
 
     def create_plot(self):
-        self.plot = Window([0.05, 0.1, 0.15, 0.2, 0.25], 0.05)
+        print([elem[0] for elem in self.output])
+        self.plot = Window([elem[0] for elem in self.output], self.dt)
         self.refresh_plot()
         self.plot.button.clicked.connect(lambda: self.refresh_plot())
         self.plot.window().show()
@@ -91,7 +95,9 @@ class MainPage:
 
     def refresh_plot(self):
         current_t = self.plot.slider.value()
-        print('current_t:', current_t / 10000)
-        self.plot.button.clicked.connect(lambda: self.plot.plot("TEST DATA"))
+        for element in self.output:
+            if math.trunc(element[0] * 10000) / 10000 == current_t / 10000:
+                self.plot.plot(self.vertices, element[1])
+                break
 
 

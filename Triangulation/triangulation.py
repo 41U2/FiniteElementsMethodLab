@@ -90,9 +90,11 @@ from typing import List, Tuple
 
 # Метод, в котором реализованы формирование списка вершин разбиения, матрицы смежности и
 # списка вершин, составляющих треугольные элементы
-def triangulation(x_start: float, y_start: float,
-                  vertices_num_x: int, vertices_num_y: int,
-                  steps_x: List[float], steps_y: List[float]) -> Tuple[List[Tuple[int, List[float]]], List[List[float]], List[Tuple[int, int, int]], List[Tuple[int, bool]]]:  # nopep 8
+def triangulation(
+        x_start: float, y_start: float,
+        vertices_num_x: int, vertices_num_y: int,
+        steps_x: List[float], steps_y: List[float]
+       ) -> Tuple[List[Tuple[int, List[float]]], List[List[float]], List[Tuple[int, int, int]], List[Tuple[int, bool]]]:
     vertices_num = vertices_num_x * vertices_num_y
     vertices = []
     adjacency_matrix = []

@@ -6,6 +6,7 @@ from ThermalConductivity.matrices import \
     get_thermal_conductivity_matrix, \
     get_source_vector
 from ThermalConductivity.utils import apply_boundary_conditions
+from ThermalConductivity.solver import ThermalConductivitySolver
 
 
 def damping_matrix_test():
@@ -86,8 +87,73 @@ def applying_boundary_conditions_test():
     print('result_vector:\n', result_vector)
 
 
+def source_function_1(vertex: List[float], t: float) -> float:
+    return 0
+
+
+def initial_function_1(vertex: List[float]) -> float:
+    if vertex[0] != 0 or vertex[1] != 0:
+        return 1
+    return -100
+
+
+def boundary_function_1(vertex: List[float], t: float) -> float:
+    return initial_function_1(vertex)
+
+
+def thermal_conductivity_solver_test():
+    vertices = [
+        [-1, -1],
+        [-1, 0],
+        [-1, 1],
+        [0, -1],
+        [0, 0],
+        [0, 1],
+        [1, -1],
+        [1, 0],
+        [1, 1]
+    ]
+    triangle_vertex_indices = [
+        (0, 1, 3),
+        (3, 1, 4),
+        (1, 2, 4),
+        (4, 2, 5),
+        (3, 4, 6),
+        (6, 4, 7),
+        (4, 5, 7),
+        (7, 5, 8)
+    ]
+    is_boundary_vertex = [
+        True,
+        True,
+        True,
+        True,
+        False,
+        True,
+        True,
+        True,
+        True
+    ]
+    n_vertices = len(vertices)
+    solver = ThermalConductivitySolver.thermal_conductivity_solver(
+        vertices,
+        triangle_vertex_indices,
+        is_boundary_vertex,
+        n_vertices)
+    result = solver.solve(
+        initial_function_1,
+        boundary_function_1,
+        source_function_1,
+        1.5,
+        0.1
+    )
+    kek = 3
+
+
+
 if __name__ == "__main__":
     # damping_matrix_test()
     # thermal_conductivity_matrix_test()
     # source_vector_test()
-    applying_boundary_conditions_test()
+    # applying_boundary_conditions_test()
+    thermal_conductivity_solver_test()

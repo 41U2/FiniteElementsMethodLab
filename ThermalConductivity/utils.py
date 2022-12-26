@@ -75,7 +75,7 @@ def apply_boundary_conditions(vertices: List[List[float]], thermal_conductivity_
         y = 1
         # current_time == prev_time + time_step (В соответствии с неявным методом Эйлера предполагаем, что ищем
         # текущие значения {u} на основе предыдущих)
-        value_from_boundary_condition = boundary_condition_func(vertex[x], vertex[y], current_time)
+        value_from_boundary_condition = boundary_condition_func(vertex, current_time)
         # Аддитивно переносим столбец матрицы теплопроводности в вектор источника тепла;
         # Присваиваем значение, полученое из функции граничного условия, вектору источника тепла в позиции,
         # соответствующей элементу главной диагонали матрицы теплопроводности

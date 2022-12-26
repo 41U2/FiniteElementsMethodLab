@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from ui_main_page import *
 from Triangulation.triangulation import *
 from ThermalConductivity.solver import ThermalConductivitySolver
@@ -22,6 +24,7 @@ class MainPage:
         self.plot = None
         self.output = None
         self.dt = 0.05
+        self.vertices = None
 
         self.main_page.init_input_params_button_action(lambda: self.init_input_params())
         self.main_page.create_plot_button_action(lambda: self.create_plot())
@@ -69,14 +72,14 @@ class MainPage:
         solver = ThermalConductivitySolver.thermal_conductivity_solver(
             vertices, triangle_indices, is_boundary_vertex, n_vertices
         )
-        self.output = solver.solve(
+        self.output = deepcopy(solver.solve(
             MainPage.initial_function,
             MainPage.boundary_function,
             MainPage.source_function,
             self.t,
             self.dt
-        )
-
+        ))
+        self.vertices = deepcopy(vertices)
         print('triangulation processed')
 
     def create_plot(self):

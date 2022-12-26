@@ -93,11 +93,31 @@ def source_function_1(vertex: List[float], t: float) -> float:
 
 def initial_function_1(vertex: List[float]) -> float:
     if vertex[0] != 0 or vertex[1] != 0:
-        return 1
-    return -100
+         return 2
+    return -2
+
+
+def initial_function_2(vertex: List[float]) -> float:
+    if vertex[0] != 0 and vertex[1] != 0:
+         return 2
+    return -2
+
+
+def initial_function_3(vertex: List[float]) -> float:
+    if vertex[0] == -1 and vertex[1] == -1:
+         return 2
+    return -2
 
 
 def boundary_function_1(vertex: List[float], t: float) -> float:
+    return initial_function_1(vertex)
+
+
+def boundary_function_2(vertex: List[float], t: float) -> float:
+    return initial_function_1(vertex)
+
+
+def boundary_function_3(vertex: List[float], t: float) -> float:
     return initial_function_1(vertex)
 
 
@@ -125,14 +145,14 @@ def thermal_conductivity_solver_test():
     ]
     is_boundary_vertex = [
         True,
-        True,
-        True,
-        True,
         False,
-        True,
-        True,
-        True,
-        True
+        False,
+        False,
+        False,
+        False,
+        False,
+        False,
+        False
     ]
     n_vertices = len(vertices)
     solver = ThermalConductivitySolver.thermal_conductivity_solver(
@@ -141,11 +161,11 @@ def thermal_conductivity_solver_test():
         is_boundary_vertex,
         n_vertices)
     result = solver.solve(
-        initial_function_1,
-        boundary_function_1,
+        initial_function_3,
+        boundary_function_3,
         source_function_1,
-        1.5,
-        0.1
+        5,
+        0.01
     )
     kek = 3
 

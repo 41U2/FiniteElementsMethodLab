@@ -79,13 +79,17 @@ def apply_boundary_conditions(vertices: List[List[float]], thermal_conductivity_
         # Аддитивно переносим столбец матрицы теплопроводности в вектор источника тепла;
         # Присваиваем значение, полученое из функции граничного условия, вектору источника тепла в позиции,
         # соответствующей элементу главной диагонали матрицы теплопроводности
+        result_matrix.set_value(i_vertex, i_vertex, 1)
+        result_vector.set_value(i_vertex, 0, value_from_boundary_condition)
         for i_row in range(vertices_num):
             if i_row == i_vertex:
-                result_matrix.set_value(i_row, i_vertex, 1)
-                result_vector.set_value(i_row, 0, value_from_boundary_condition)
+                continue
             else:
                 result_vector.set_value(i_row, 0,
-                                        result_vector(i_row, 0) - result_matrix(i_row, i_vertex))
+                                        #result_vector(i_row, 0) - result_matrix(i_row, i_vertex))
+                                        result_vector(i_row, 0) -
+                                        result_matrix(i_row, i_vertex) *
+                                        value_from_boundary_condition)
                 result_matrix.set_value(i_row, i_vertex, 0)
         # Обнуляем строку матрицы теплопроводности
         for i_column in range(vertices_num):

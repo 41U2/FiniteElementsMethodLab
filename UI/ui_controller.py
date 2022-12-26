@@ -52,22 +52,19 @@ class MainPage:
         return 0
 
     @staticmethod
-    def initial_function(vertex: List[float]) -> float:
-        # return abs(vertex[0]) + abs(vertex[1])
-       if vertex[0] != 0 or vertex[1] != 0:
-           return 2
-       return -2
+    def initial_function_1(vertex: List[float]) -> float:
+       return pow(vertex[0], 2) + pow(vertex[1], 2)
 
     @staticmethod
     def boundary_function(vertex: List[float], t: float) -> float:
-        return MainPage.initial_function(vertex) # - min(t, 1)
+        return MainPage.initial_function_1(vertex) #- 2 * t
 
     def compute(self):
         vertices_tuple, adjacency_matrix, triangle_indices, is_boundary_vertex_tuple = triangulation(
             self.x0, self.y0, self.nx, self.ny, self.hx, self.hy
         )
-        n_vertices = len(vertices_tuple)
         vertices = [elem[1] for elem in vertices_tuple]
+        n_vertices = len(vertices)
         is_boundary_vertex = [elem[1] for elem in is_boundary_vertex_tuple]
         band_width = band_width_from_triangle_vertex_indices(triangle_indices)
         solver = ThermalConductivitySolver.thermal_conductivity_solver(
@@ -75,7 +72,7 @@ class MainPage:
         )
         # [[t, [u1, u2, u3, u4...]]] - температура в вершинах для определённого t
         self.output = deepcopy(solver.solve(
-            MainPage.initial_function,
+            MainPage.initial_function_1,
             MainPage.boundary_function,
             MainPage.source_function,
             self.t,
@@ -91,13 +88,16 @@ class MainPage:
         self.refresh_plot()
         self.plot.button.clicked.connect(lambda: self.refresh_plot())
         self.plot.window().show()
+        self.plot.slider.valueChanged.connect(self.refresh_plot)
         print('plot created')
 
     def refresh_plot(self):
-        current_t = self.plot.slider.value()
+        current_t = self.plot.slider.value() / 10000
         for element in self.output:
-            if math.trunc(element[0] * 10000) / 10000 == current_t / 10000:
-                self.plot.plot(self.vertices, element[1])
-                break
+            element_time = math.trunc(element[0] * 10000) / 10000
+            if element_time < current_t:
+                continue
+            self.plot.plot(self.vertices, element[1])
+            break
 
 

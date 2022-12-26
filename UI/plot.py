@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import QDialog, QPushButton, QVBoxLayout, QSlider, QLabel
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
+from scipy.interpolate import griddata
+
 from test_data_for_plot import *
 from PyQt5.QtCore import Qt
 import math
@@ -24,7 +26,6 @@ class Window(QDialog):
         self.button = QPushButton('Построить график')
 
         # self.button.clicked.connect(lambda: self.plot(self.points, self.t_values))
-
 
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
@@ -83,11 +84,10 @@ class Window(QDialog):
         print(tmp_t_values[0], tmp_t_values[-1])
         self.slider.setValue(tmp_t_values[0])
 
-
         self.step = math.trunc(step * 10000)
         self.slider.setSingleStep(step * 10000)
-        self.slider.setTickInterval(step* 10000)
-        self.slider.setPageStep(step* 10000)
+        self.slider.setTickInterval(step * 10000)
+        self.slider.setPageStep(step * 10000)
         self.slider.setTickPosition(QSlider.TickPosition.TicksAbove)
 
         print('STEP', self.step)
@@ -119,24 +119,6 @@ class Window(QDialog):
         self.result_label.setText(f'Значение t: {self.slider.value() / 10000}')
 
     def plot(self, points, temperature: float):
-
-        # [
-        #     ([1, 2], 0.12),
-        #     ([2, 2], 0.3),
-        # ]
-
-        # tобщ
-        # t1, t2 ... tобщ
-
-        # points = [
-        #     ([1, 1], 34),
-        #     ([2, 1], 43),
-        #     ([3, 1], 11),
-        #     ([1, 2], 89),
-        #     ([2, 2], 19),
-        #     ([3, 2], 67),
-        # ]
-
         self.figure.clear()
 
         # test_data = TestDataForPlot()
@@ -147,28 +129,20 @@ class Window(QDialog):
 
         x_data = [point[0] for point in points]
         y_data = [point[1] for point in points]
-        rgb = [[element / max(temperature), 0, 0] for element in temperature]
+        rgb = [[element / 20, 1 - element / 20, 0] for element in temperature]
         rgb_final = []
         for elem in rgb:
             if elem[0] < 0:
                 elem[0] = 0
+            if elem[0] > 1:
+                elem[0] = 1
+            if elem[1] < 0:
+                elem[1] = 0
+            if elem[1] > 1:
+                elem[1] = 1
             rgb_final.append(elem)
 
-        print('В ГРАФИКЕ', temperature)
-
-        ax.scatter(x_data, y_data, s=300, c=rgb_final, edgecolors='black', linewidths=1)
+        ax.scatter(x_data, y_data, s=750, c=rgb_final, edgecolors='black', linewidths=1)
         ax.grid(True)
 
-        # refresh canvas
-
-        # temperature, xedges, yedges = np.histogram2d(x_data, y_data, bins=50)
-        # extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
-        #
-        # plt.clf()
-        # plt.imshow(temperature, extent=extent, origin='lower',
-        #            interpolation='bilinear')
-        #
-        # plt.show()
-
         self.canvas.draw()
-

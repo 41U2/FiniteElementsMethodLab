@@ -30,6 +30,17 @@ class Matrix:
             result_matrix.values[i] = value * self.values[i]
         return result_matrix
 
+    def __eq__(self, other: "Matrix") -> bool:
+        equal = self.n_cols == other.n_cols and self.n_rows == other.n_rows
+        if not equal:
+            return equal
+        for i in range(self.n_rows):
+            for j in range(self.n_cols):
+                if self(i, j) != other(i, j):
+                    equal = False
+                    break
+        return equal
+
     def set_value(self, i_row: int, i_col: int, value: float):
         assert i_row < self.n_rows
         assert i_row >= 0

@@ -1,5 +1,8 @@
+from copy import deepcopy
+
 from ui_main_page import *
 from Triangulation.triangulation import *
+from ThermalConductivity.solver import ThermalConductivitySolver
 from plot import *
 
 
@@ -19,43 +22,68 @@ class MainPage:
         self.psi = None
         self.t = None
         self.plot = None
-        self.points = 1
-        self.step = 0.05
-        self.t_values = [0.05, 0.1, 0.15, 0.2, 0.25]
+        self.output = None
+        self.dt = 0.05
+        self.vertices = None
 
         self.main_page.init_input_params_button_action(lambda: self.init_input_params())
-        self.main_page.create_plot_button_action(lambda: self.create_plot(self.points, self.t_values, self.step))
+        self.main_page.create_plot_button_action(lambda: self.create_plot())
 
         self.main_window.show()
 
     def init_input_params(self):
         self.nx = int(self.main_page.nx_input.toPlainText())
         self.ny = int(self.main_page.ny_input.toPlainText())
-        self.hx = list(map(int, self.main_page.hx_input.toPlainText().split(',')))
-        self.hy = list(map(int, self.main_page.hy_input.toPlainText().split(',')))
-        self.x0 = int(self.main_page.x0_input.toPlainText())
-        self.y0 = int(self.main_page.y0_input.toPlainText())
+        self.hx = list(map(float, self.main_page.hx_input.toPlainText().split(',')))
+        self.hy = list(map(float, self.main_page.hy_input.toPlainText().split(',')))
+        self.x0 = float(self.main_page.x0_input.toPlainText())
+        self.y0 = float(self.main_page.y0_input.toPlainText())
         self.f = self.main_page.f_dropdown.currentText()
         self.phi = self.main_page.phi_dropdown.currentText()
         self.psi = self.main_page.psi_dropdown.currentText()
-        self.t = self.main_page.t_input.toPlainText()
+        self.t = float(self.main_page.t_input.toPlainText())
 
         print('input params are set')
 
-        self.invoke_calculation()
+        self.compute()
 
-    def invoke_calculation(self):
+    @staticmethod
+    def source_function(vertex: List[float], t: float) -> float:
+        return 0
 
-        print('calculation processed')
+    @staticmethod
+    def initial_function(vertex: List[float]) -> float:
+        # return abs(vertex[0]) + abs(vertex[1])
+       if vertex[0] != 0 or vertex[1] != 0:
+           return 2
+       return -2
 
-    def create_plot(self, points, t_values, step):
-        # t_values - возможные значения t
-        # points:
-        # [
-        #     ([1, 2], 0.12),
-        #     ([2, 2], 0.3),
-        # ]
-        self.plot = Window(points, t_values, step)
+    @staticmethod
+    def boundary_function(vertex: List[float], t: float) -> float:
+        return MainPage.initial_function(vertex) # - min(t, 1)
+
+    def compute(self):
+        vertices_tuple, adjacency_matrix, triangle_indices, is_boundary_vertex_tuple = triangulation(
+            self.x0, self.y0, self.nx, self.ny, self.hx, self.hy
+        )
+        n_vertices = len(vertices_tuple)
+        vertices = [elem[1] for elem in vertices_tuple]
+        is_boundary_vertex = [elem[1] for elem in is_boundary_vertex_tuple]
+        solver = ThermalConductivitySolver.thermal_conductivity_solver(
+            vertices, triangle_indices, is_boundary_vertex, n_vertices
+        )
+        self.output = deepcopy(solver.solve(
+            MainPage.initial_function,
+            MainPage.boundary_function,
+            MainPage.source_function,
+            self.t,
+            self.dt
+        ))
+        self.vertices = deepcopy(vertices)
+        print('triangulation processed')
+
+    def create_plot(self):
+        self.plot = Window()
         self.plot.window().show()
         print('plot created')
 

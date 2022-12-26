@@ -73,16 +73,19 @@ class ThermalConductivitySolver:
             source_function,
             time: float,
             dt: float
-    ):
+    ) -> List[Tuple[float, List[float]]]:
         n_vertices = len(self.vertices)
         current_values = Matrix.zeros(n_vertices, 1)
         for i_vertex in range(n_vertices):
             value = initial_function(self.vertices[i_vertex])
             current_values.set_value(i_vertex, 0, value)
 
-        current_time = dt
+        current_time = 0
+        output = [(current_time, deepcopy(current_values.values))]
+
         print(f"Current time: 0", "\nCurrent_values =\n", current_values)
         while current_time + dt < time:
+            current_time += dt
             current_values = self.__euler_step__(
                 self.vertices,
                 self.triangle_vertex_indices,
@@ -95,8 +98,8 @@ class ThermalConductivitySolver:
                 current_time,
                 dt
             )
+            output.append((current_time, deepcopy(current_values.values)))
             print(f"Current time: {current_time}", "\nCurrent_values =\n", current_values)
-            current_time += dt
 
         last_dt = time - current_time
         current_values = self.__euler_step__(
@@ -111,5 +114,7 @@ class ThermalConductivitySolver:
             time,
             last_dt
         )
+
+        output.append((time, deepcopy(current_values.values)))
         print(f"Current time: {time}", "\nCurrent_values =\n", current_values)
-        return current_values
+        return output

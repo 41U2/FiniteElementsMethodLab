@@ -251,5 +251,5 @@ if __name__ == "__main__":
     # source_vector_test()
     # applying_boundary_conditions_test()
     # thermal_conductivity_solver_test()
-    # triangulation_test()
-    cuthill_test()
+    triangulation_test()
+    # cuthill_test()

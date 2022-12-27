@@ -380,13 +380,28 @@ class UIMainPage:
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.create_plot_button.setText(_translate("MainWindow", "Посчитать и построить график"))
+
         self.ny_text.setText(_translate("MainWindow", "Ny"))
+        self.ny_input.setText("7")
+
         self.x0_text.setText(_translate("MainWindow", "x0"))
+        self.x0_input.setText("-1.8")
+
         self.hy_text.setText(_translate("MainWindow", "hy"))
+        self.hy_input.setText("0.54, 0.66, 0.65, 0.55, 0.51, 0.69")
+
         self.nx_text.setText(_translate("MainWindow", "Nx"))
+        self.nx_input.setText("7")
+
         self.y0_text.setText(_translate("MainWindow", "y0"))
+        self.y0_input.setText("-1.8")
+
         self.t_text.setText(_translate("MainWindow", "t"))
+        self.t_input.setText("2")
+
         self.hx_text.setText(_translate("MainWindow", "hx"))
+        self.hx_input.setText("0.63, 0.57, 0.55, 0.65, 0.69, 0.51")
+
         self.f_text.setText(_translate("MainWindow", "f(x,y,t)"))
         self.phi_text.setText(_translate("MainWindow", "φ(x,y)"))
         self.psi_text.setText(_translate("MainWindow", "ψ(x,y,t)"))

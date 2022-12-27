@@ -404,8 +404,8 @@ class UIMainPage:
         self.t_text.setText(_translate("MainWindow", "t"))
         self.hx_text.setText(_translate("MainWindow", "hx"))
         self.f_text.setText(_translate("MainWindow", "f(x,y,t)"))
-        self.phi_text.setText(_translate("MainWindow", "Phi(x,y)"))
-        self.psi_text.setText(_translate("MainWindow", "Psi(x,y,t)"))
+        self.phi_text.setText(_translate("MainWindow", "φ(x,y)"))
+        self.psi_text.setText(_translate("MainWindow", "ψ(x,y,t)"))
 
     def set_dropdown_list_values(self):
         self.f_dropdown.addItem("значение f1")

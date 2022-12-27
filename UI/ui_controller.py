@@ -1,6 +1,8 @@
 from copy import deepcopy
 from math import sin
 
+from CuthillMcKee.CuthillMcKee import CuthillMcKee
+from CuthillMcKee.ReNum import apply_new_indices
 from ui_main_page import *
 from Triangulation.triangulation import *
 from ThermalConductivity.solver import ThermalConductivitySolver
@@ -92,12 +94,15 @@ class MainPage:
         vertices_tuple, adjacency_matrix, triangle_indices, is_boundary_vertex_tuple = triangulation(
             self.x0, self.y0, self.nx, self.ny, self.hx, self.hy
         )
-        vertices = [elem[1] for elem in vertices_tuple]
-        n_vertices = len(vertices)
-        is_boundary_vertex = [elem[1] for elem in is_boundary_vertex_tuple]
-        band_width = band_width_from_triangle_vertex_indices(triangle_indices)
+        old_to_new_indices = CuthillMcKee(adjacency_matrix)
+        new_vertices, new_triangle_indices, new_is_boundary_vertex = apply_new_indices(
+            old_to_new_indices,
+            vertices_tuple,
+            triangle_indices,
+            is_boundary_vertex_tuple)
+        band_width = band_width_from_triangle_vertex_indices(new_triangle_indices)
         solver = ThermalConductivitySolver.thermal_conductivity_solver(
-            vertices, triangle_indices, is_boundary_vertex, band_width
+            new_vertices, new_triangle_indices, new_is_boundary_vertex, band_width
         )
         # [[t, [u1, u2, u3, u4...]]] - температура в вершинах для определённого t
         self.output = deepcopy(solver.solve(
@@ -108,7 +113,7 @@ class MainPage:
             self.dt
         ))
         # [[x, y], [x, y]]
-        self.vertices = deepcopy(vertices)
+        self.vertices = deepcopy(new_vertices)
         print('triangulation processed')
 
     def create_plot(self):

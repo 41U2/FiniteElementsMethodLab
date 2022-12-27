@@ -16,3 +16,5 @@
 5. Установить необходимые зависимости с помощью команды:  
 
         pip install -r {SOURCE_DIR}\FiniteElementsMethodLab\requirements.txt
+        
+6. Программу запускать из UI/main.py

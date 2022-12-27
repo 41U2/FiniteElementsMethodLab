@@ -49,7 +49,7 @@ class MainPage:
 
     @staticmethod
     def source_function(vertex: List[float], t: float) -> float:
-        return 0
+        return  t**2
 
     @staticmethod
     def initial_function_1(vertex: List[float]) -> float:
@@ -57,7 +57,7 @@ class MainPage:
 
     @staticmethod
     def boundary_function(vertex: List[float], t: float) -> float:
-        return MainPage.initial_function_1(vertex) #- 2 * t
+        return MainPage.initial_function_1(vertex)
 
     def compute(self):
         vertices_tuple, adjacency_matrix, triangle_indices, is_boundary_vertex_tuple = triangulation(
@@ -86,9 +86,19 @@ class MainPage:
         print([elem[0] for elem in self.output])
         self.plot = Window([elem[0] for elem in self.output], self.dt)
         self.refresh_plot()
-        self.plot.button.clicked.connect(lambda: self.refresh_plot())
         self.plot.window().show()
         self.plot.slider.valueChanged.connect(self.refresh_plot)
+
+        max_values = []
+        for elem in self.output:
+            max_values.append(max(elem[1]))
+        self.plot.max_temperature = max(max_values)
+
+        min_values = []
+        for elem in self.output:
+            min_values.append(min(elem[1]))
+        self.plot.min_temperature = min(min_values)
+
         print('plot created')
 
     def refresh_plot(self):

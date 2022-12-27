@@ -23,7 +23,8 @@ class Window(QDialog):
 
         self.toolbar = NavigationToolbar(self.canvas, self)
 
-        self.button = QPushButton('Построить график')
+        self.min_temperature = -10
+        self.max_temperature = 10
 
         # self.button.clicked.connect(lambda: self.plot(self.points, self.t_values))
 
@@ -33,25 +34,6 @@ class Window(QDialog):
         font.setBold(True)
         font.setItalic(False)
         font.setWeight(75)
-        self.button.setFont(font)
-        self.button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.button.setAutoFillBackground(False)
-        self.button.setStyleSheet(
-            "background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:1, y2:0, stop:0 rgba(100, 100, 100, 166), stop:1 rgba(255, 255, 255, 255));\n"
-            "border-with: 10px;\n"
-            "border-radius:10px;\n"
-            "border-color: rgb(0, 0, 0);")
-        self.button.setIconSize(QtCore.QSize(12, 12))
-
-        self.button.setFont(font)
-        self.button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.button.setAutoFillBackground(False)
-        self.button.setStyleSheet(
-            "background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:1, y2:0, stop:0 rgba(100, 100, 100, 166), stop:1 rgba(255, 255, 255, 255));\n"
-            "border-with: 10px;\n"
-            "border-radius:10px;\n"
-            "border-color: rgb(0, 0, 0);")
-        self.button.setIconSize(QtCore.QSize(12, 12))
 
         # creating a Vertical Box layout
         layout = QVBoxLayout()
@@ -63,7 +45,6 @@ class Window(QDialog):
         layout.addWidget(self.canvas)
 
         # adding push button to the layout
-        layout.addWidget(self.button)
 
         # t_values = [0.05, 0.1, 0.15, 0.2, 0.25]
         # step = 0.05
@@ -129,7 +110,20 @@ class Window(QDialog):
 
         x_data = [point[0] for point in points]
         y_data = [point[1] for point in points]
-        rgb = [[element / 20, 1 - element / 20, 0] for element in temperature]
+        # rgb = [
+        #     [
+        #         (element - min(0, self.min_temperature)) / (self.max_temperature - min(0, self.min_temperature)),
+        #         1 - (element - min(0, self.min_temperature)) / (self.max_temperature - min(0, self.min_temperature)),
+        #         0
+        #     ] for element in temperature
+        # ]
+        rgb = [
+            [
+                element / self.max_temperature,
+                1 - element / self.max_temperature,
+                0
+            ] for element in temperature
+        ]
         rgb_final = []
         for elem in rgb:
             if elem[0] < 0:

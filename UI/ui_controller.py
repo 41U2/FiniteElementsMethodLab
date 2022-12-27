@@ -1,5 +1,5 @@
 from copy import deepcopy
-from math import sin
+from math import sin, sqrt
 
 from CuthillMcKee.CuthillMcKee import CuthillMcKee
 from CuthillMcKee.ReNum import apply_new_indices
@@ -29,11 +29,23 @@ class MainPage:
 
     @staticmethod
     def source_function_4(vertex: List[float], t: float) -> float:
-        return abs(vertex[0]) + abs(vertex[1]) + t
+        return sqrt(vertex[0] ** 2 + vertex[1] ** 2) * t
 
     @staticmethod
     def source_function_5(vertex: List[float], t: float) -> float:
-        return -(abs(vertex[0]) + abs(vertex[1]) + t)
+        return -sqrt(vertex[0] ** 2 + vertex[1] ** 2) * t
+
+    @staticmethod
+    def initial_function_0(vertex: List[float]):
+        return 0
+
+    @staticmethod
+    def initial_function_1(vertex: List[float]):
+        return vertex[0]**2 + vertex[1]**2
+
+    @staticmethod
+    def initial_function_2(vertex: List[float]):
+        return abs(vertex[0]) + abs(vertex[1])
 
     def __init__(self, main_page_input):
         self.main_window = main_page_input
@@ -52,11 +64,35 @@ class MainPage:
         self.output = None
         self.dt = 0.05
         self.vertices = None
+        self.added_to_psi_function = None
 
         # self.main_page.init_input_params_button_action(lambda: self.init_input_params())
         self.main_page.create_plot_button_action(lambda: self.create_plot())
 
         self.main_window.show()
+
+    @staticmethod
+    def added_to_psi_function_0(vertex: List[float], t: float):
+        return 0
+
+    @staticmethod
+    def added_to_psi_function_1(vertex: List[float], t: float):
+        return 2 * t
+
+    @staticmethod
+    def added_to_psi_function_2(vertex: List[float], t: float):
+        return -2 * t
+
+    @staticmethod
+    def added_to_psi_function_3(vertex: List[float], t: float):
+        return sqrt(vertex[0] ** 2 + vertex[1] ** 2) * t
+
+    @staticmethod
+    def added_to_psi_function_4(vertex: List[float], t: float):
+        return -sqrt(vertex[0]**2 + vertex[1]**2) * t
+
+    def border_function(self, vertex: List[float], t: float):
+        return self.phi(vertex) + self.added_to_psi_function(vertex, t)
 
     def init_input_params(self):
 
@@ -68,6 +104,21 @@ class MainPage:
             self.source_function_4,
             self.source_function_5
         ]
+
+        initial_functions = [
+            self.initial_function_0,
+            self.initial_function_1,
+            self.initial_function_2
+        ]
+
+        added_functions = [
+            self.added_to_psi_function_0,
+            self.added_to_psi_function_1,
+            self.added_to_psi_function_2,
+            self.added_to_psi_function_3,
+            self.added_to_psi_function_4
+        ]
+
         self.nx = int(self.main_page.nx_input.toPlainText())
         self.ny = int(self.main_page.ny_input.toPlainText())
         self.hx = list(map(float, self.main_page.hx_input.toPlainText().split(',')))
@@ -75,16 +126,12 @@ class MainPage:
         self.x0 = float(self.main_page.x0_input.toPlainText())
         self.y0 = float(self.main_page.y0_input.toPlainText())
         self.f = source_functions[self.main_page.f_dropdown.currentIndex()]
-        self.phi = self.main_page.phi_dropdown.currentText()
-        self.psi = self.main_page.psi_dropdown.currentText()
+        self.phi = initial_functions[self.main_page.phi_dropdown.currentIndex()]
+        self.added_to_psi_function = added_functions[self.main_page.psi_dropdown.currentIndex()]
         self.t = float(self.main_page.t_input.toPlainText())
 
         print('input params are set')
         #self.compute()
-
-    @staticmethod
-    def initial_function_1(vertex: List[float]) -> float:
-       return pow(vertex[0], 2) + pow(vertex[1], 2)
 
     @staticmethod
     def boundary_function(vertex: List[float], t: float) -> float:
@@ -106,8 +153,8 @@ class MainPage:
         )
         # [[t, [u1, u2, u3, u4...]]] - температура в вершинах для определённого t
         self.output = deepcopy(solver.solve(
-            MainPage.initial_function_1,
-            MainPage.boundary_function,
+            self.phi,
+            self.border_function,
             self.f,
             self.t,
             self.dt

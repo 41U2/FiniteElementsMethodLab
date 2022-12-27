@@ -396,15 +396,18 @@ class UIMainPage:
         self.f_dropdown.addItem("t²")
         self.f_dropdown.addItem("-t²")
         self.f_dropdown.addItem("3sin(2t)")
-        self.f_dropdown.addItem("|x| + |y| + t")
-        self.f_dropdown.addItem("-|x| - |y| - t")
+        self.f_dropdown.addItem("sqrt(x² + y²)t")
+        self.f_dropdown.addItem("-sqrt(x² + y²)t")
 
-        self.phi_dropdown.addItem("значение phi1")
-        self.phi_dropdown.addItem("значение phi2")
+        self.phi_dropdown.addItem("0")
+        self.phi_dropdown.addItem("x² + y²")
+        self.phi_dropdown.addItem("|x| + |y|")
 
-        self.psi_dropdown.addItem("значение psi1")
-        self.psi_dropdown.addItem("значение psi2")
-        self.psi_dropdown.addItem("значение psi3")
+        self.psi_dropdown.addItem("φ(x,y)")
+        self.psi_dropdown.addItem("φ(x,y) + 2t")
+        self.psi_dropdown.addItem("φ(x,y) - 2t")
+        self.psi_dropdown.addItem("φ(x,y) + sqrt(x² + y²)t")
+        self.psi_dropdown.addItem("φ(x,y) -sqrt(x² + y²)t")
 
     # def init_input_params_button_action(self, lambda_expression):
     #     self.init_input_params_button.clicked.connect(lambda_expression)

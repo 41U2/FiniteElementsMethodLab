@@ -408,8 +408,12 @@ class UIMainPage:
         self.psi_text.setText(_translate("MainWindow", "ψ(x,y,t)"))
 
     def set_dropdown_list_values(self):
-        self.f_dropdown.addItem("значение f1")
-        self.f_dropdown.addItem("значение f2")
+        self.f_dropdown.addItem("0")
+        self.f_dropdown.addItem("t²")
+        self.f_dropdown.addItem("-t²")
+        self.f_dropdown.addItem("3sin(2t)")
+        self.f_dropdown.addItem("|x| + |y| + t")
+        self.f_dropdown.addItem("-|x| - |y| - t")
 
         self.phi_dropdown.addItem("значение phi1")
         self.phi_dropdown.addItem("значение phi2")
@@ -418,8 +422,8 @@ class UIMainPage:
         self.psi_dropdown.addItem("значение psi2")
         self.psi_dropdown.addItem("значение psi3")
 
-    def init_input_params_button_action(self, lambda_expression):
-        self.init_input_params_button.clicked.connect(lambda_expression)
+    # def init_input_params_button_action(self, lambda_expression):
+    #     self.init_input_params_button.clicked.connect(lambda_expression)
 
     def create_plot_button_action(self, labmda_expression):
         self.create_plot_button.clicked.connect(labmda_expression)

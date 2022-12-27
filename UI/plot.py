@@ -110,20 +110,20 @@ class Window(QDialog):
 
         x_data = [point[0] for point in points]
         y_data = [point[1] for point in points]
-        # rgb = [
-        #     [
-        #         (element - min(0, self.min_temperature)) / (self.max_temperature - min(0, self.min_temperature)),
-        #         1 - (element - min(0, self.min_temperature)) / (self.max_temperature - min(0, self.min_temperature)),
-        #         0
-        #     ] for element in temperature
-        # ]
         rgb = [
             [
-                element / self.max_temperature,
-                1 - element / self.max_temperature,
+                (element - min(0, self.min_temperature)) / (self.max_temperature - min(0, self.min_temperature)),
+                1 - (element - min(0, self.min_temperature)) / (self.max_temperature - min(0, self.min_temperature)),
                 0
             ] for element in temperature
         ]
+        # rgb = [
+        #     [
+        #         element / self.max_temperature,
+        #         1 - element / self.max_temperature,
+        #         0
+        #     ] for element in temperature
+        # ]
         rgb_final = []
         for elem in rgb:
             if elem[0] < 0:
